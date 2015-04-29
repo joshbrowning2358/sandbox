@@ -1,6 +1,25 @@
 library(foreign)
 library(dplyr)
+# Author: Nathan Wanner
+# Date: 28 April 2015
+# This script calculate the prevalence of inadequacy of 6 nutrients from a National Household Survey
+# for Vietnam conducted in 2010.
+
+# The script will calculate the prevalence of inadequacy using information directly from the distribution
+# of food consumption as well as with alternative parameters.
+
+# Our data contains records on food aquisition
+# We will change food quantities in grams to quantities of 6 different nutrients using
+# nutrient density information for foods
+# We will then impute missing nutrient quantities
+
+# Then we will compute distributional parameters for the use of the calculation of 
+# the prevalence of inadeacy for each of the 6 nutrients.
+
+# Lastly, we will calculate the prevalence of inadequacy for each of the 6 nutrients.
+
 library(Hmisc)
+library(tidyr)
 
 rm(list=ls())
 
@@ -14,12 +33,12 @@ Individual = read.spss("HM.sav",to.data.frame=TRUE,use.value.labels=FALSE)
 Prices = read.csv("Prices.csv")
 Household = merge(Household,Prices,by.x=c("month"),by.y=c("Month"))
 
-# Get Average Energy Requirements
-
+# Get Average Energy Requirements for calories and nutrients
 setwd("C:/Users/Wanner/Desktop/Work/Nutrition/R")
-
+Requirements = read.csv("Requirements.csv")
 ADER = read.csv("ADER.csv")
 
+# Create age classes in individual file so that requirements can be merged in from ADER
 Individual$AGE_CLASS = NA
 
 Individual$AGE_CLASS  = "ACOVER70"
@@ -55,483 +74,214 @@ Individual[Individual$hm_age<2,]$AGE_CLASS = "AC01"
 Individual[Individual$hm_age<1,]$AGE_CLASS = "AC00"
 Individual$AGE_CLASS = as.factor(Individual$AGE_CLASS)
 
+# Other necessary variables to allow for the merging with the ADER file
 Individual$U5MRthreshold = ">10"
 Individual$FAOST_CODE = 237
 Individual[Individual$gender==1,]$gender="Male"
 Individual[Individual$gender==2,]$gender="Female"
 Individual$Year = 2010
 
+# Merge the ADER file
 Individual = merge(Individual,ADER,by.x=c("FAOST_CODE","U5MRthreshold","Year","AGE_CLASS","gender"),
                    by.y=c("FAOST_CODE","U5MRthreshold","Year","AGE_CLASS","Gender"))
 
+# Get rid of the ADER dataset which is quite big
+rm("ADER")
+
+# Calculate the total energy requirement for the household
+# This info will be used later to distribute nutrients within the household
 Data_Temp = 
   Individual %>%
   group_by(hh_no) %>%
   summarise(Total_Requirement = sum(AER_1.85))
 
+# Now the Individual file has Individual requirements and the sum of these requirements
+# We will use the ratio of individual requirements to the total requirement later to distribute 
+# intra-household distribution of nutrients.
 Individual = merge(Individual,Data_Temp,by=c("hh_no"))
 
-rm("ADER")
+# Now we will swtich to the main dataset we will be working with
+# We will combine the Food, Country_NCT, and Household data files.
 
+# First, let's deflate the income variable using the CPIs
 # Deflate the income
 Household$Inc = Household$new_inc * (Household$Average_CPI/Household$CPI)
 
-Household$pop_weight = Household$hh_wgt*Household$HH_size
-
+# Now merge in the Food and Country_NCT data files
 Data = merge(Food,Country_NCT,by.x=c("item_code"),by.y=c("item_cod"))
 Data = merge(Data,Household,by=c("hh_no"))
 
 # Deflate the food expenditure
 Data$fd_mv = Data$fd_mv * (Data$Average_FPI/Data$FPI)
 
-Data$Calories = NA
+# Re-arrange the dataset so that we have one record for each nutrient
+# The dataset will now have one record per household, per food item, per nutrient.
+# Our 6 nutrients that we will work with are Vitamin A, Vitamin B1, Vitamin B2,
+# Vitamin B6, Vitamin B12, and Vitamin C
+Data = gather(select(Data,one_of("hh_no",
+                                 "item_code",
+                                 "fd_qty",
+                                 "fd_mv",
+                                 "refuse",
+                                 "VitaminA",
+                                 "VitaminB1",
+                                 "VitaminB2",
+                                 "VitaminB6",
+                                 "VitaminB12",
+                                 "Vit_C",
+                                 "Inc",
+                                 "hh_wgt",
+                                 "region",
+                                 "urb_rur",
+                                 "HH_size")),
+              key = Nutrient,value = Density,-hh_no,-item_code,-fd_qty,-fd_mv,-refuse,-Inc,-hh_wgt,-region,-urb_rur,-HH_size)
 
-# Calculate the calories
-Data$Calories = (Data$fd_pro*4+Data$fd_fat*9+Data$fd_car*4+Data$fd_fib*2+Data$fd_alc*7)*
-  ((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
+# Use nutrient densities from the Country_NCT file to come up with quantities of nutrients.
+Data$Quantity = Data$Density*((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
 
-Data$Vitamin_A =  Data$VitaminA*((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
-Data$Vitamin_B1 =  Data$VitaminB1*((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
-Data$Vitamin_B2 =  Data$VitaminB2*((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
-Data$Vitamin_B6 =  Data$VitaminB6*((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
-Data$Vitamin_B12 =  Data$VitaminB12*((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
-Data$Vitamin_C =  Data$Vit_C*((Data$fd_qty-Data$fd_qty*(Data$refuse/100))/100)
-
-# Calculate the calorie cost for the household by ignoring food away from home
-Data_Temp = 
-  Data %>%
-  group_by(hh_no) %>%
-  summarise(Calorie_Cost=sum(Calories[!is.na(Calories)])/sum(fd_mv[!is.na(Calories)]),
-            Vitamin_A_Cost=sum(Vitamin_A[!is.na(Calories)])/sum(fd_mv[!is.na(Calories)]),
-            Vitamin_B1_Cost=sum(Vitamin_B1[!is.na(Calories)])/sum(fd_mv[!is.na(Calories)]),
-            Vitamin_B2_Cost=sum(Vitamin_B2[!is.na(Calories)])/sum(fd_mv[!is.na(Calories)]),
-            Vitamin_B6_Cost=sum(Vitamin_B6[!is.na(Calories)])/sum(fd_mv[!is.na(Calories)]),
-            Vitamin_B12_Cost=sum(Vitamin_B12[!is.na(Calories)])/sum(fd_mv[!is.na(Calories)]),
-            Vitamin_C_Cost=sum(Vitamin_C[!is.na(Calories)])/sum(fd_mv[!is.na(Calories)]))
-
-Household = merge(Household,Data_Temp,by=c("hh_no"))
-
-# Calculate income quintiles using household weights
+# Calculate income quantiles using household weights
+# The quintiles will be used as a grouping variable for impuation of missing food quantities.
+# The deciles will be used as a grouping variable for an alternative calculation of one of the parameters
+# needed to calculate the prevalence of inadequacy.
 Inc_Quintiles = wtd.quantile(Household$Inc, 
                              weights=(Household$hh_wgt), 
-                            probs=c(.2,.4,.6,.8,1))
+                             probs=c(0,.2,.4,.6,.8))
 
 Inc_Deciles = wtd.quantile(Household$Inc, 
-                             weights=(Household$hh_wgt), 
-                             probs=c(.1,.2,.3,.4,.5,.6,.7,.8,.9,1))
+                           weights=(Household$hh_wgt), 
+                           probs=c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9))
 
-Household$Inc_Quint[Household$Inc<=Inc_Quintiles[5]] = 5
-Household$Inc_Quint[Household$Inc<=Inc_Quintiles[4]] = 4
-Household$Inc_Quint[Household$Inc<=Inc_Quintiles[3]] = 3
-Household$Inc_Quint[Household$Inc<=Inc_Quintiles[2]] = 2
-Household$Inc_Quint[Household$Inc<=Inc_Quintiles[1]] = 1
-
-# Calculate the calorie cost by region, area, and income quintile using household weights
-Data_Temp = 
-  Household %>%
-  group_by(region, urb_rur, Inc_Quint) %>%
-  summarise(Imputation_reg_area_inc = median(Calorie_Cost,na.rm=TRUE),
-            Imputation_VitA_reg_area_inc = median(Vitamin_A_Cost,na.rm=TRUE),
-            Imputation_VitB1_reg_area_inc = median(Vitamin_B1_Cost,na.rm=TRUE),
-            Imputation_VitB2_reg_area_inc = median(Vitamin_B2_Cost,na.rm=TRUE),
-            Imputation_VitB6_reg_area_inc = median(Vitamin_B6_Cost,na.rm=TRUE),
-            Imputation_VitB12_reg_area_inc = median(Vitamin_B12_Cost,na.rm=TRUE),
-            Imputation_VitC_reg_area_inc = median(Vitamin_C_Cost,na.rm=TRUE))
-
-Household = merge(Household,Data_Temp,by=c("region","urb_rur","Inc_Quint"))
-Data = merge(Data,Household[,c("hh_no","Imputation_reg_area_inc",
-                               "Imputation_VitA_reg_area_inc",
-                               "Imputation_VitB1_reg_area_inc",
-                               "Imputation_VitB2_reg_area_inc",
-                               "Imputation_VitB6_reg_area_inc",
-                               "Imputation_VitB12_reg_area_inc",
-                               "Imputation_VitC_reg_area_inc")],by=c("hh_no"))
-
-# Calculate the calorie cost by region and area using household weights
-Data_Temp = 
-  Household %>%
-  group_by(region, urb_rur) %>%
-  summarise(Imputation_reg_area = median(Calorie_Cost,na.rm=TRUE),
-            Imputation_VitA_reg_area = median(Vitamin_A_Cost,na.rm=TRUE),
-            Imputation_VitB1_reg_area = median(Vitamin_B1_Cost,na.rm=TRUE),
-            Imputation_VitB2_reg_area = median(Vitamin_B2_Cost,na.rm=TRUE),
-            Imputation_VitB6_reg_area = median(Vitamin_B6_Cost,na.rm=TRUE),
-            Imputation_VitB12_reg_area = median(Vitamin_B12_Cost,na.rm=TRUE),
-            Imputation_VitC_reg_area = median(Vitamin_C_Cost,na.rm=TRUE))
-
-Household = merge(Household,Data_Temp,by=c("region","urb_rur"))
-Data = merge(Data,Household[,c("hh_no","Imputation_reg_area",
-                               "Imputation_VitA_reg_area",
-                               "Imputation_VitB1_reg_area",
-                               "Imputation_VitB2_reg_area",
-                               "Imputation_VitB6_reg_area",
-                               "Imputation_VitB12_reg_area",
-                               "Imputation_VitC_reg_area")],by=c("hh_no"))
-
-# Try imputing calories for food away from home using the highest level of disaggregation
-Data[is.na(Data$Calories),]$Calories = Data[is.na(Data$Calories),]$fd_mv * Data[is.na(Data$Calories),]$Imputation_reg_area_inc
-# Impute any values that are still missing using next level of disaggregation
-Data[is.na(Data$Calories),]$Calories = Data[is.na(Data$Calories),]$fd_mv * Data[is.na(Data$Calories),]$Imputation_reg_area
-
-# Try imputing Vitamin A for food away from home using the highest level of disaggregation
-Data[is.na(Data$Vitamin_A),]$Vitamin_A = Data[is.na(Data$Vitamin_A),]$fd_mv * Data[is.na(Data$Vitamin_A),]$Imputation_VitA_reg_area_inc
-# Impute any values that are still missing using next level of disaggregation
-Data[is.na(Data$Vitamin_A),]$Vitamin_A = Data[is.na(Data$Vitamin_A),]$fd_mv * Data[is.na(Data$Vitamin_A),]$Imputation_VitA_reg_area
-
-# Try imputing Vitamin B1 for food away from home using the highest level of disaggregation
-Data[is.na(Data$Vitamin_B1),]$Vitamin_B1 = Data[is.na(Data$Vitamin_B1),]$fd_mv * Data[is.na(Data$Vitamin_B1),]$Imputation_VitB1_reg_area_inc
-# Impute any values that are still missing using next level of disaggregation
-Data[is.na(Data$Vitamin_B1),]$Vitamin_B1 = Data[is.na(Data$Vitamin_B1),]$fd_mv * Data[is.na(Data$Vitamin_B1),]$Imputation_VitB1_reg_area
-
-# Try imputing Vitamin B2 for food away from home using the highest level of disaggregation
-Data[is.na(Data$Vitamin_B2),]$Vitamin_B2 = Data[is.na(Data$Vitamin_B2),]$fd_mv * Data[is.na(Data$Vitamin_B2),]$Imputation_VitB2_reg_area_inc
-# Impute any values that are still missing using next level of disaggregation
-Data[is.na(Data$Vitamin_B2),]$Vitamin_B2 = Data[is.na(Data$Vitamin_B2),]$fd_mv * Data[is.na(Data$Vitamin_B2),]$Imputation_VitB2_reg_area
-
-# Try imputing Vitamin B6 for food away from home using the highest level of disaggregation
-Data[is.na(Data$Vitamin_B6),]$Vitamin_B6 = Data[is.na(Data$Vitamin_B6),]$fd_mv * Data[is.na(Data$Vitamin_B6),]$Imputation_VitB6_reg_area_inc
-# Impute any values that are still missing using next level of disaggregation
-Data[is.na(Data$Vitamin_B6),]$Vitamin_B6 = Data[is.na(Data$Vitamin_B6),]$fd_mv * Data[is.na(Data$Vitamin_B6),]$Imputation_VitB6_reg_area
-
-# Try imputing Vitamin B12 for food away from home using the highest level of disaggregation
-Data[is.na(Data$Vitamin_B12),]$Vitamin_B12 = Data[is.na(Data$Vitamin_B12),]$fd_mv * Data[is.na(Data$Vitamin_B12),]$Imputation_VitB12_reg_area_inc
-# Impute any values that are still missing using next level of disaggregation
-Data[is.na(Data$Vitamin_B12),]$Vitamin_B12 = Data[is.na(Data$Vitamin_B12),]$fd_mv * Data[is.na(Data$Vitamin_B12),]$Imputation_VitB12_reg_area
-
-# Try imputing Vitamin C for food away from home using the highest level of disaggregation
-Data[is.na(Data$Vitamin_C),]$Vitamin_C = Data[is.na(Data$Vitamin_C),]$fd_mv * Data[is.na(Data$Vitamin_C),]$Imputation_VitC_reg_area_inc
-# Impute any values that are still missing using next level of disaggregation
-Data[is.na(Data$Vitamin_C),]$Vitamin_C = Data[is.na(Data$Vitamin_C),]$fd_mv * Data[is.na(Data$Vitamin_C),]$Imputation_VitC_reg_area
-
-# Calculate the total number of calories for the household
-Data_Household = 
+# Below we assign each household to the appropriate income quantile
+Data = 
   Data %>%
   group_by(hh_no) %>%
-  summarise(Calories=sum(Calories),
-            Vitamin_A = sum(Vitamin_A),
-            Vitamin_B1 = sum(Vitamin_B1),
-            Vitamin_B2 = sum(Vitamin_B2),
-            Vitamin_B6 = sum(Vitamin_B6),
-            Vitamin_B12 = sum(Vitamin_B12),
-            Vitamin_C = sum(Vitamin_C))
-            
-Individual = merge(Data_Household,Individual,by=c("hh_no"))
-Individual = merge(Individual,Household,by=c("hh_no"))
+  mutate(Inc_Quint = findInterval(Inc,Inc_Quintiles),
+         Inc_Dec = findInterval(Inc,Inc_Deciles))
 
-options(digits=10)
+# Here we compute two different nutrient costs for imputation
+# One is calculated by grouping by region, area (urban/rural), and income quintile for each nutrient
+# A second nutrient cost for imputation is calculated without considering income quintile
+Data_Temp = 
+  Data %>%
+  group_by(hh_no,Nutrient) %>%
+  mutate(Cost=sum(Quantity[!is.na(Quantity)])/sum(fd_mv[!is.na(Quantity)])) %>%
+  distinct(hh_no,Nutrient)  %>%
+  group_by(region, urb_rur,Inc_Quint,Nutrient) %>%
+  mutate(Imputation_reg_area_inc = median(Cost,na.rm=TRUE)) %>%
+  group_by(region, urb_rur,Nutrient) %>%
+  mutate(Imputation_reg_area = median(Cost,na.rm=TRUE))
 
-Individual$Vitamin_A = (Individual$AER_1.85/Individual$Total_Requirement)*Individual$Vitamin_A
-Individual$Vitamin_B1 = (Individual$AER_1.85/Individual$Total_Requirement)*Individual$Vitamin_B1
-Individual$Vitamin_B2 = (Individual$AER_1.85/Individual$Total_Requirement)*Individual$Vitamin_B2
-Individual$Vitamin_B6 = (Individual$AER_1.85/Individual$Total_Requirement)*Individual$Vitamin_B6
-Individual$Vitamin_B12 = (Individual$AER_1.85/Individual$Total_Requirement)*Individual$Vitamin_B12
-Individual$Vitamin_C = (Individual$AER_1.85/Individual$Total_Requirement)*Individual$Vitamin_C
+# We were not able to mutate the imputation variables at the original
+# structure of our dataset.  So we will have to merge it back in
 
-Individual = Individual[Individual$hm_age>=1,]
+# This merge takes quite a bit of time
+Data = merge(Data,Data_Temp[,c("hh_no","Nutrient","Imputation_reg_area_inc","Imputation_reg_area")],by=c("hh_no","Nutrient"))
 
-wtd.mean(Individual$Calories/Individual$HH_size,weights=Individual$hh_wgt)
+# Do the imputation of missing food quantities
+# Try imputing calories for food away from home using the highest level of disaggregation
+Data[is.na(Data$Quantity),]$Quantity = Data[is.na(Data$Quantity),]$fd_mv * 
+  Data[is.na(Data$Quantity),]$Imputation_reg_area_inc
+# Impute any values that are still missing using next level of disaggregation
+Data[is.na(Data$Quantity),]$Quantity = Data[is.na(Data$Quantity),]$fd_mv * 
+  Data[is.na(Data$Quantity),]$Imputation_reg_area
 
-Individual$Req_A[Individual$hm_age>=1&Individual$gender=="Male"] = 210 
-Individual$Req_A[Individual$hm_age>=1&Individual$gender=="Female"] = 210
-Individual$Req_A[Individual$hm_age>=4&Individual$gender=="Male"] = 275 
-Individual$Req_A[Individual$hm_age>=4&Individual$gender=="Female"] = 275
-Individual$Req_A[Individual$hm_age>=9&Individual$gender=="Male"] = 445 
-Individual$Req_A[Individual$hm_age>=9&Individual$gender=="Female"] = 420
-Individual$Req_A[Individual$hm_age>=14&Individual$gender=="Male"] = 630 
-Individual$Req_A[Individual$hm_age>=14&Individual$gender=="Female"] = 485
-Individual$Req_A[Individual$hm_age>=19&Individual$gender=="Male"] = 625 
-Individual$Req_A[Individual$hm_age>=19&Individual$gender=="Female"] = 500
-Individual$Req_A[Individual$hm_age>=31&Individual$gender=="Male"] = 625 
-Individual$Req_A[Individual$hm_age>=31&Individual$gender=="Female"] = 500
-Individual$Req_A[Individual$hm_age>=51&Individual$gender=="Male"] = 625 
-Individual$Req_A[Individual$hm_age>=51&Individual$gender=="Female"] = 500
-Individual$Req_A[Individual$hm_age>=70&Individual$gender=="Male"] = 625 
-Individual$Req_A[Individual$hm_age>=70&Individual$gender=="Female"] = 500
+# Calculate the total amount of each nutrient for each household
+Household_Nutrient = 
+  Data %>%
+  group_by(hh_no,Nutrient) %>%
+  summarise(Total=sum(Quantity),
+            Inc_Dec = max(Inc_Dec),
+            hh_wgt = max(hh_wgt),
+            HH_size = max(HH_size))
 
-Individual$Req_B1[Individual$hm_age>=1&Individual$gender=="Male"] = .4 
-Individual$Req_B1[Individual$hm_age>=1&Individual$gender=="Female"] = .4
-Individual$Req_B1[Individual$hm_age>=4&Individual$gender=="Male"] = .5 
-Individual$Req_B1[Individual$hm_age>=4&Individual$gender=="Female"] = .5
-Individual$Req_B1[Individual$hm_age>=9&Individual$gender=="Male"] = .7 
-Individual$Req_B1[Individual$hm_age>=9&Individual$gender=="Female"] = .7
-Individual$Req_B1[Individual$hm_age>=14&Individual$gender=="Male"] = 1 
-Individual$Req_B1[Individual$hm_age>=14&Individual$gender=="Female"] = .9
-Individual$Req_B1[Individual$hm_age>=19&Individual$gender=="Male"] = 1 
-Individual$Req_B1[Individual$hm_age>=19&Individual$gender=="Female"] = .9
-Individual$Req_B1[Individual$hm_age>=31&Individual$gender=="Male"] = 1 
-Individual$Req_B1[Individual$hm_age>=31&Individual$gender=="Female"] = .9
-Individual$Req_B1[Individual$hm_age>=51&Individual$gender=="Male"] = 1 
-Individual$Req_B1[Individual$hm_age>=51&Individual$gender=="Female"] = .9
-Individual$Req_B1[Individual$hm_age>=70&Individual$gender=="Male"] = 1 
-Individual$Req_B1[Individual$hm_age>=70&Individual$gender=="Female"] = .9
+# Now we will merge back in the information from the Individual file neede to distribute
+# food within the household.
+# Note that we were not able to work with one dataset containing also this information, because the
+# dataset would have been too big.
+Individual_Nutrient = merge(Household_Nutrient,Individual,by=c("hh_no"))
 
-Individual$Req_B2[Individual$hm_age>=1&Individual$gender=="Male"] = .4 
-Individual$Req_B2[Individual$hm_age>=1&Individual$gender=="Female"] = .4
-Individual$Req_B2[Individual$hm_age>=4&Individual$gender=="Male"] = .5 
-Individual$Req_B2[Individual$hm_age>=4&Individual$gender=="Female"] = .5
-Individual$Req_B2[Individual$hm_age>=9&Individual$gender=="Male"] = .8 
-Individual$Req_B2[Individual$hm_age>=9&Individual$gender=="Female"] = .8
-Individual$Req_B2[Individual$hm_age>=14&Individual$gender=="Male"] = 1.1 
-Individual$Req_B2[Individual$hm_age>=14&Individual$gender=="Female"] = .9
-Individual$Req_B2[Individual$hm_age>=19&Individual$gender=="Male"] = 1.1 
-Individual$Req_B2[Individual$hm_age>=19&Individual$gender=="Female"] = .9
-Individual$Req_B2[Individual$hm_age>=31&Individual$gender=="Male"] = 1.1 
-Individual$Req_B2[Individual$hm_age>=31&Individual$gender=="Female"] = .9
-Individual$Req_B2[Individual$hm_age>=51&Individual$gender=="Male"] = 1.1 
-Individual$Req_B2[Individual$hm_age>=51&Individual$gender=="Female"] = .9
-Individual$Req_B2[Individual$hm_age>=70&Individual$gender=="Male"] = 1.1 
-Individual$Req_B2[Individual$hm_age>=70&Individual$gender=="Female"] = .9
+# Distribute food within the household according to the ratio of the individual calorie requirement
+# to the total household calorie requirement
+Individual_Nutrient$Quantity = (Individual_Nutrient$AER_1.85/Individual_Nutrient$Total_Requirement)*Individual_Nutrient$Total
 
-Individual$Req_B6[Individual$hm_age>=1&Individual$gender=="Male"] = .4 
-Individual$Req_B6[Individual$hm_age>=1&Individual$gender=="Female"] = .4
-Individual$Req_B6[Individual$hm_age>=4&Individual$gender=="Male"] = .5 
-Individual$Req_B6[Individual$hm_age>=4&Individual$gender=="Female"] = .5
-Individual$Req_B6[Individual$hm_age>=9&Individual$gender=="Male"] = .8 
-Individual$Req_B6[Individual$hm_age>=9&Individual$gender=="Female"] = .8
-Individual$Req_B6[Individual$hm_age>=14&Individual$gender=="Male"] = 1.1 
-Individual$Req_B6[Individual$hm_age>=14&Individual$gender=="Female"] = 1
-Individual$Req_B6[Individual$hm_age>=19&Individual$gender=="Male"] = 1.1 
-Individual$Req_B6[Individual$hm_age>=19&Individual$gender=="Female"] = 1.1
-Individual$Req_B6[Individual$hm_age>=31&Individual$gender=="Male"] = 1.1 
-Individual$Req_B6[Individual$hm_age>=31&Individual$gender=="Female"] = 1.1
-Individual$Req_B6[Individual$hm_age>=51&Individual$gender=="Male"] = 1.4 
-Individual$Req_B6[Individual$hm_age>=51&Individual$gender=="Female"] = 1.3
-Individual$Req_B6[Individual$hm_age>=70&Individual$gender=="Male"] = 1.4 
-Individual$Req_B6[Individual$hm_age>=70&Individual$gender=="Female"] = 1.3
+# We only have nutrient requirement data for individuals of age 1 or greater
+# So from now on, we will only work with these individuals
+Individual_Nutrient = Individual_Nutrient[Individual_Nutrient$hm_age>=1,]
 
-Individual$Req_B12[Individual$hm_age>=1&Individual$gender=="Male"] = .7 
-Individual$Req_B12[Individual$hm_age>=1&Individual$gender=="Female"] = .7
-Individual$Req_B12[Individual$hm_age>=4&Individual$gender=="Male"] = 1 
-Individual$Req_B12[Individual$hm_age>=4&Individual$gender=="Female"] = 1
-Individual$Req_B12[Individual$hm_age>=9&Individual$gender=="Male"] = 1.5 
-Individual$Req_B12[Individual$hm_age>=9&Individual$gender=="Female"] = 1.5
-Individual$Req_B12[Individual$hm_age>=14&Individual$gender=="Male"] = 2 
-Individual$Req_B12[Individual$hm_age>=14&Individual$gender=="Female"] = 2
-Individual$Req_B12[Individual$hm_age>=19&Individual$gender=="Male"] = 2 
-Individual$Req_B12[Individual$hm_age>=19&Individual$gender=="Female"] = 2
-Individual$Req_B12[Individual$hm_age>=31&Individual$gender=="Male"] = 2 
-Individual$Req_B12[Individual$hm_age>=31&Individual$gender=="Female"] = 2
-Individual$Req_B12[Individual$hm_age>=51&Individual$gender=="Male"] = 2 
-Individual$Req_B12[Individual$hm_age>=51&Individual$gender=="Female"] = 2
-Individual$Req_B12[Individual$hm_age>=70&Individual$gender=="Male"] = 2 
-Individual$Req_B12[Individual$hm_age>=70&Individual$gender=="Female"] = 2
+# Create the appropriate age classes to merge in nutrient requirements
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=1] = 1
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=4] = 2
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=9] = 3
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=14] = 4
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=19] = 5
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=31] = 6
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=51] = 7
+Individual_Nutrient$Nutrient_Age_Class[Individual_Nutrient$hm_age>=70] = 8
 
-Individual$Req_C[Individual$hm_age>=1&Individual$gender=="Male"] = 13 
-Individual$Req_C[Individual$hm_age>=1&Individual$gender=="Female"] = 13
-Individual$Req_C[Individual$hm_age>=4&Individual$gender=="Male"] = 22
-Individual$Req_C[Individual$hm_age>=4&Individual$gender=="Female"] = 22
-Individual$Req_C[Individual$hm_age>=9&Individual$gender=="Male"] = 39 
-Individual$Req_C[Individual$hm_age>=9&Individual$gender=="Female"] = 39
-Individual$Req_C[Individual$hm_age>=14&Individual$gender=="Male"] = 63 
-Individual$Req_C[Individual$hm_age>=14&Individual$gender=="Female"] = 56
-Individual$Req_C[Individual$hm_age>=19&Individual$gender=="Male"] = 75 
-Individual$Req_C[Individual$hm_age>=19&Individual$gender=="Female"] = 60
-Individual$Req_C[Individual$hm_age>=31&Individual$gender=="Male"] = 75 
-Individual$Req_C[Individual$hm_age>=31&Individual$gender=="Female"] = 60
-Individual$Req_C[Individual$hm_age>=51&Individual$gender=="Male"] = 75 
-Individual$Req_C[Individual$hm_age>=51&Individual$gender=="Female"] = 60
-Individual$Req_C[Individual$hm_age>=70&Individual$gender=="Male"] = 75 
-Individual$Req_C[Individual$hm_age>=70&Individual$gender=="Female"] = 60
+# Merge in the requirements by sex and age class for our 6 nutrients
+Individual_Nutrient = merge(Individual_Nutrient,Requirements,by=c("Nutrient","Nutrient_Age_Class","gender"))
 
-Mean_A = wtd.mean(Individual$Vitamin_A,weights=Individual$hh_wgt)
-CV_A = sqrt(wtd.var(Individual$Vitamin_A, weights=Individual$hh_wgt))/Mean_A
-Mean_Req_A = wtd.mean(Individual$Req_A,weights=Individual$hh_wgt)
-CV_Req_A = .2
+# Calculate distributional parameters for each of the 6 nutrients
+# These will be the mean and CV of intake as well as the mean of requirement
+Individual_Nutrient = 
+  Individual_Nutrient %>%
+  group_by(Nutrient) %>%
+  mutate(Mean = wtd.mean(Quantity,weights=hh_wgt),
+         CV = sqrt(wtd.var(Quantity, weights=hh_wgt))/Mean,
+         Mean_Req = wtd.mean(Req,weights=hh_wgt),
+         Sum = sum(hh_wgt),
+         Number = n())
 
-Mean_B1 = wtd.mean(Individual$Vitamin_B1,weights=Individual$hh_wgt)
-CV_B1 = sqrt(wtd.var(Individual$Vitamin_B1, weights=Individual$hh_wgt))/Mean_B1
-Mean_Req_B1 = wtd.mean(Individual$Req_B1,weights=Individual$hh_wgt)
-CV_Req_B1 = .1
+Individual_Nutrient$Inc_Dec = as.factor(Individual_Nutrient$Inc_Dec)
 
-Mean_B2 = wtd.mean(Individual$Vitamin_B2,weights=Individual$hh_wgt)
-CV_B2 = sqrt(wtd.var(Individual$Vitamin_B2, weights=Individual$hh_wgt))/Mean_B2
-Mean_Req_B2 = wtd.mean(Individual$Req_B2,weights=Individual$hh_wgt)
-CV_Req_B2 = .1
-
-Mean_B6 = wtd.mean(Individual$Vitamin_B6,weights=Individual$hh_wgt)
-CV_B6 = sqrt(wtd.var(Individual$Vitamin_B6, weights=Individual$hh_wgt))/Mean_B6
-Mean_Req_B6 = wtd.mean(Individual$Req_B6,weights=Individual$hh_wgt)
-CV_Req_B6 = .1
-
-Mean_B12 = wtd.mean(Individual$Vitamin_B12,weights=Individual$hh_wgt)
-CV_B12 = sqrt(wtd.var(Individual$Vitamin_B12, weights=Individual$hh_wgt))/Mean_B12
-Mean_Req_B12 = wtd.mean(Individual$Req_B12,weights=Individual$hh_wgt)
-CV_Req_B12 = .1
-
-Mean_C = wtd.mean(Individual$Vitamin_C,weights=Individual$hh_wgt)
-CV_C = sqrt(wtd.var(Individual$Vitamin_C, weights=Individual$hh_wgt))/Mean_C
-Mean_Req_C = wtd.mean(Individual$Req_C,weights=Individual$hh_wgt)
-CV_Req_C = .1
-
-Probability_A = function(x) {(1-pnorm(x,mean=Mean_Req_A,sd=CV_Req_A*Mean_Req_A))*
-                                       (1/x)*dnorm(log(x),mean=log(Mean_A)-log(CV_A^2+1)/2,sd=sqrt(log(CV_A^2+1)))}
-Probability_B1 = function(x) {(1-pnorm(x,mean=Mean_Req_B1,sd=CV_Req_B1*Mean_Req_B1))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B1)-log(CV_B1^2+1)/2,sd=sqrt(log(CV_B1^2+1)))}
-Probability_B2 = function(x) {(1-pnorm(x,mean=Mean_Req_B2,sd=CV_Req_B2*Mean_Req_B2))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B2)-log(CV_B2^2+1)/2,sd=sqrt(log(CV_B2^2+1)))}
-Probability_B6 = function(x) {(1-pnorm(x,mean=Mean_Req_B6,sd=CV_Req_B6*Mean_Req_B6))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B6)-log(CV_B6^2+1)/2,sd=sqrt(log(CV_B6^2+1)))}
-Probability_B12 = function(x) {(1-pnorm(x,mean=Mean_Req_B12,sd=CV_Req_B12*Mean_Req_B12))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B12)-log(CV_B12^2+1)/2,sd=sqrt(log(CV_B12^2+1)))}
-Probability_C = function(x) {(1-pnorm(x,mean=Mean_Req_C,sd=CV_Req_C*Mean_Req_C))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_C)-log(CV_C^2+1)/2,sd=sqrt(log(CV_C^2+1)))}
-
-PoI_A = integrate(Probability_A,0,Inf)
-PoI_EAR_A = pnorm(log(Mean_Req_A),mean=log(Mean_A)-log(CV_A^2+1)/2,sd=sqrt(log(CV_A^2+1)))
-
-PoI_B1 = integrate(Probability_B1,0,Inf)
-PoI_EAR_B1 = pnorm(log(Mean_Req_B1),mean=log(Mean_B1)-log(CV_B1^2+1)/2,sd=sqrt(log(CV_B1^2+1)))
-
-PoI_B2 = integrate(Probability_B2,0,Inf)
-PoI_EAR_B2 = pnorm(log(Mean_Req_B2),mean=log(Mean_B2)-log(CV_B2^2+1)/2,sd=sqrt(log(CV_B2^2+1)))
-
-PoI_B6 = integrate(Probability_B6,0,Inf)
-PoI_EAR_B6 = pnorm(log(Mean_Req_B6),mean=log(Mean_B6)-log(CV_B6^2+1)/2,sd=sqrt(log(CV_B6^2+1)))
-
-PoI_B12 = integrate(Probability_B12,0,Inf)
-PoI_EAR_B12 = pnorm(log(Mean_Req_B12),mean=log(Mean_B12)-log(CV_B12^2+1)/2,sd=sqrt(log(CV_B12^2+1)))
-
-PoI_C = integrate(Probability_C,0,Inf)
-PoI_EAR_C = pnorm(log(Mean_Req_C),mean=log(Mean_C)-log(CV_C^2+1)/2,sd=sqrt(log(CV_C^2+1)))
-
-# Initialize the moments using income decile to be zero
-
-IncomeSecondCentralMoment_A = 0
-IncomeSecondCentralMoment_B1 = 0
-IncomeSecondCentralMoment_B2 = 0
-IncomeSecondCentralMoment_B6 = 0
-IncomeSecondCentralMoment_B12 = 0
-IncomeSecondCentralMoment_C = 0
-
-
-{for (i in 1:length(Inc_Deciles)) {
+# Here we will calculate an alternative form for the CV of nutrient intake.
+# This CV calculation groups by income decile for the calculation of the CV
+Nutrient = 
+  Individual_Nutrient %>%
+  group_by(Nutrient,Inc_Dec) %>%
+  mutate(IncomeSecondCentralMoment_Inc_Dec = ((wtd.mean(Quantity,weights=hh_wgt)-max(Mean))^2)*(sum(hh_wgt)/max(Sum))) %>%
+  distinct(Nutrient,Inc_Dec)  %>%
+  group_by(Nutrient) %>%
+  summarise(IncomeSecondCentralMoment = sum(IncomeSecondCentralMoment_Inc_Dec),
+            Mean = max(Mean),
+            CV = max(CV),
+            Mean_Req = max(Mean_Req),
+            Number = max(Number))
   
-  # Intialize the moments for the 1st income decile
-  if (i ==1) {
+# Finish the alternative calculation of the CV of nutrient intake
+Nutrient$CVDueToIncome = sqrt(Nutrient$IncomeSecondCentralMoment*(Nutrient$Number/(Nutrient$Number-1)))/Nutrient$Mean
+
+Nutrient$CV_Inc = sqrt(Nutrient$CVDueToIncome^2+.2^2)
+
+# The last distributional parameter (the CV of requirement) is easy
+# The value is .2 for Vitamn A and .1 for the other nutrients
+Nutrient$CV_Req[Nutrient$Nutrient=="VitaminA"] = .2
+Nutrient$CV_Req[Nutrient$Nutrient!="VitaminA"] = .1
+
+# Here is our function that will calculate the prevalence of inadequacy
+PoI = function(Parameters) {
+  
+  Probability = function(x) {
     
-    IncomeSecondCentralMoment_A = ((wtd.mean(Individual$Vitamin_A[Individual$Inc<=Inc_Deciles[i]],
-                                           weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])
-                                  -Mean_A)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])/sum(Individual$hh_wgt))
+    (1-pnorm(x,mean=Parameters[1],sd=Parameters[2]*Parameters[1]))*
+      (1/x)*dnorm(log(x),mean=log(Parameters[3])-log(Parameters[4]^2+1)/2,sd=sqrt(log(Parameters[4]^2+1)))    
     
-    IncomeSecondCentralMoment_B1 = ((wtd.mean(Individual$Vitamin_B1[Individual$Inc<=Inc_Deciles[i]],
-                                              weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])
-                                     -Mean_B1)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_B2 = ((wtd.mean(Individual$Vitamin_B2[Individual$Inc<=Inc_Deciles[i]],
-                                              weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])
-                                     -Mean_B2)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_B6 = ((wtd.mean(Individual$Vitamin_B6[Individual$Inc<=Inc_Deciles[i]],
-                                              weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])
-                                     -Mean_B6)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_B12 = ((wtd.mean(Individual$Vitamin_B12[Individual$Inc<=Inc_Deciles[i]],
-                                              weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])
-                                     -Mean_B12)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_C = ((wtd.mean(Individual$Vitamin_C[Individual$Inc<=Inc_Deciles[i]],
-                                              weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])
-                                     -Mean_C)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]])/sum(Individual$hh_wgt))
   }
   
-  # Add on to the moments by going through the rest of the income deciles
-  else {
-    
-    IncomeSecondCentralMoment_A = IncomeSecondCentralMoment_A + 
-      ((wtd.mean(Individual$Vitamin_A[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]],
-                 weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])
-        -Mean_A)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_B1 = IncomeSecondCentralMoment_B1 + 
-      ((wtd.mean(Individual$Vitamin_B1[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]],
-                 weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])
-        -Mean_B1)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_B2 = IncomeSecondCentralMoment_B2 + 
-      ((wtd.mean(Individual$Vitamin_B2[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]],
-                 weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])
-        -Mean_B2)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_B6 = IncomeSecondCentralMoment_B6 + 
-      ((wtd.mean(Individual$Vitamin_B6[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]],
-                 weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])
-        -Mean_B6)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_B12 = IncomeSecondCentralMoment_B12 + 
-      ((wtd.mean(Individual$Vitamin_B12[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]],
-                 weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])
-        -Mean_B12)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])/sum(Individual$hh_wgt))
-    
-    IncomeSecondCentralMoment_C = IncomeSecondCentralMoment_C + 
-      ((wtd.mean(Individual$Vitamin_C[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]],
-                 weights=Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])
-        -Mean_C)^2)*(sum(Individual$hh_wgt[Individual$Inc<=Inc_Deciles[i]&Individual$Inc>Inc_Deciles[i-1]])/sum(Individual$hh_wgt))
-      
-  }
+  PoI = integrate(Probability,0,Inf)$value
   
-}}
+}
 
-# Calculate the CV due to income which is the CV calculated by grouping by income deciles
+# Now, using the function above, we will calculate the prevalence of inadequacy with the empirical mean and CV
+# as well as the empirical mean and alternative form for the CV
+# for each nutrient.
+Nutrient = 
+  Nutrient %>%
+  group_by(Nutrient) %>%
+  mutate(Prevalence = PoI(c(Mean_Req,CV_Req,Mean,CV)),
+         Prevalence_EAR = pnorm(log(Mean_Req),mean=log(Mean)-log(CV^2+1)/2,sd=sqrt(log(CV^2+1))),
+         Prevalence_Inc = PoI(c(Mean_Req,CV_Req,Mean,CV_Inc)),
+         Prevalence_EAR_Inc = pnorm(log(Mean_Req),mean=log(Mean)-log(CV_Inc^2+1)/2,sd=sqrt(log(CV_Inc^2+1))))
 
-CVDueToIncome_A = (sqrt(IncomeSecondCentralMoment_A *(length(Data$Vitamin_A)/(length(Data$Vitamin_A)-1))))/Mean_A
-CVDueToIncome_B1 = (sqrt(IncomeSecondCentralMoment_B1 *(length(Data$Vitamin_B1)/(length(Data$Vitamin_B1)-1))))/Mean_B1
-CVDueToIncome_B2 = (sqrt(IncomeSecondCentralMoment_B2 *(length(Data$Vitamin_B2)/(length(Data$Vitamin_B2)-1))))/Mean_B2
-CVDueToIncome_B6 = (sqrt(IncomeSecondCentralMoment_B6 *(length(Data$Vitamin_B6)/(length(Data$Vitamin_B6)-1))))/Mean_B6
-CVDueToIncome_B12 = (sqrt(IncomeSecondCentralMoment_B12 *(length(Data$Vitamin_B12)/(length(Data$Vitamin_B12)-1))))/Mean_B12
-CVDueToIncome_C = (sqrt(IncomeSecondCentralMoment_C *(length(Data$Vitamin_C)/(length(Data$Vitamin_C)-1))))/Mean_B1
-
-CV_Inc_A = sqrt(CVDueToIncome_A^2+.2^2)
-CV_Inc_B1 = sqrt(CVDueToIncome_B1^2+.2^2)
-CV_Inc_B2 = sqrt(CVDueToIncome_B2^2+.2^2)
-CV_Inc_B6 = sqrt(CVDueToIncome_B6^2+.2^2)
-CV_Inc_B12 = sqrt(CVDueToIncome_B12^2+.2^2)
-CV_Inc_C = sqrt(CVDueToIncome_C^2+.2^2)
-
-Probability_A = function(x) {(1-pnorm(x,mean=Mean_Req_A,sd=CV_Req_A*Mean_Req_A))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_A)-log(CV_Inc_A^2+1)/2,sd=sqrt(log(CV_Inc_A^2+1)))}
-
-Probability_B1 = function(x) {(1-pnorm(x,mean=Mean_Req_B1,sd=CV_Req_B1*Mean_Req_B1))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B1)-log(CV_Inc_B1^2+1)/2,sd=sqrt(log(CV_Inc_B1^2+1)))}
-
-
-Probability_B2 = function(x) {(1-pnorm(x,mean=Mean_Req_B2,sd=CV_Req_B1*Mean_Req_B2))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B2)-log(CV_Inc_B2^2+1)/2,sd=sqrt(log(CV_Inc_B2^2+1)))}
-
-
-Probability_B6 = function(x) {(1-pnorm(x,mean=Mean_Req_B6,sd=CV_Req_B6*Mean_Req_B6))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B6)-log(CV_Inc_B6^2+1)/2,sd=sqrt(log(CV_Inc_B6^2+1)))}
-
-
-Probability_B12 = function(x) {(1-pnorm(x,mean=Mean_Req_B12,sd=CV_Req_B12*Mean_Req_B12))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_B12)-log(CV_Inc_B12^2+1)/2,sd=sqrt(log(CV_Inc_B12^2+1)))}
-
-
-Probability_C = function(x) {(1-pnorm(x,mean=Mean_Req_C,sd=CV_Req_C*Mean_Req_C))*
-                                (1/x)*dnorm(log(x),mean=log(Mean_C)-log(CV_Inc_C^2+1)/2,sd=sqrt(log(CV_Inc_C^2+1)))}
-
-PoI_Inc_A = integrate(Probability_A,0,Inf)
-PoI_Inc_EAR_A = pnorm(log(Mean_Req_A),mean=log(Mean_A)-log(CV_Inc_A^2+1)/2,sd=sqrt(log(CV_Inc_A^2+1)))
-
-PoI_Inc_B1 = integrate(Probability_B1,0,Inf)
-PoI_Inc_EAR_B1 = pnorm(log(Mean_Req_B1),mean=log(Mean_B1)-log(CV_Inc_B1^2+1)/2,sd=sqrt(log(CV_Inc_B1^2+1)))
-
-PoI_Inc_B2 = integrate(Probability_B2,0,Inf)
-PoI_Inc_EAR_B2 = pnorm(log(Mean_Req_B2),mean=log(Mean_B2)-log(CV_Inc_B2^2+1)/2,sd=sqrt(log(CV_Inc_B2^2+1)))
-
-PoI_Inc_B6 = integrate(Probability_B6,0,Inf)
-PoI_Inc_EAR_B6 = pnorm(log(Mean_Req_B6),mean=log(Mean_B6)-log(CV_Inc_B6^2+1)/2,sd=sqrt(log(CV_Inc_B6^2+1)))
-
-PoI_Inc_B12 = integrate(Probability_B12,0,Inf)
-PoI_Inc_EAR_B12 = pnorm(log(Mean_Req_B12),mean=log(Mean_B12)-log(CV_Inc_B12^2+1)/2,sd=sqrt(log(CV_Inc_B12^2+1)))
-
-PoI_Inc_C = integrate(Probability_C,0,Inf)
-PoI_Inc_EAR_C = pnorm(log(Mean_Req_C),mean=log(Mean_C)-log(CV_Inc_C^2+1)/2,sd=sqrt(log(CV_Inc_C^2+1)))
-
-Output = cbind(rbind(PoI_A$value,PoI_EAR_A,PoI_Inc_A$value,PoI_Inc_EAR_A),
-               rbind(PoI_B1$value,PoI_EAR_B1,PoI_Inc_B1$value,PoI_Inc_EAR_B1),
-               rbind(PoI_B2$value,PoI_EAR_B2,PoI_Inc_B2$value,PoI_Inc_EAR_B2),
-               rbind(PoI_B6$value,PoI_EAR_B6,PoI_Inc_B6$value,PoI_Inc_EAR_B6),
-               rbind(PoI_B12$value,PoI_EAR_B12,PoI_Inc_B12$value,PoI_Inc_EAR_B12),
-               rbind(PoI_C$value,PoI_EAR_C,PoI_Inc_C$value,PoI_Inc_EAR_C))
-
-write.csv(Output,"Micronutrient_Vietnam.csv")
+# Output our results.
+write.csv(Nutrient[,c("Nutrient","Prevalence","Prevalence_EAR","Prevalence_Inc","Prevalence_EAR_Inc")],"Output.csv")
