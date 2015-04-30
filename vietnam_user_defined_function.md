@@ -1,5 +1,7 @@
 # Example of using of user-defined R-function
 
+Author: [Alexander Matrunich](mailto:aleksandr.matrunich@fao.org)
+
 Let me provide an example of applying of user-created R function.
 
 ## Base point
