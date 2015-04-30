@@ -4,7 +4,7 @@ Let me provide an example of applying of user-created R function.
 
 ## Base point
 
-In original code we have following relevant lines:
+In [original code](https://github.com/rockclimber112358/sandbox/commit/e635ac36ae9ed70bd318fc332166f634767ba0c0#diff-7ce0e781009c261132780b53ab2b24bd) we have following relevant lines:
 
 ```R
 library(foreign)
@@ -14,10 +14,8 @@ Food = read.spss("Food.sav",to.data.frame=TRUE,use.value.labels=FALSE)
 Country_NCT = read.spss("country_nct.sav",to.data.frame=TRUE,use.value.labels=FALSE)
 Household = read.spss("HH_ADEPT.sav",to.data.frame=TRUE,use.value.labels=FALSE)
 Individual = read.spss("HM.sav",to.data.frame=TRUE,use.value.labels=FALSE)
-Prices = read.csv("Prices.csv")
-Household = merge(Household,Prices,by.x=c("month"),by.y=c("Month"))
 ```
-## Wrap read.spss() into our function
+## Wrap read.spss() by our function
 
 Here we repeat the same parameters `to.data.frame=TRUE,use.value.labels=FALSE` in each call of read.spss(). If we want to change one parameter we have to do 4 manual changes in our code. Let's create a function and run it for our files.
 
@@ -75,10 +73,10 @@ read1 <- function(filename) {
 ```
 ## Lower case for column names
 
-Later in the code there are several mergins. In some cases column names in datasets are 
+Later in the code there are several mergins. In some cases column names in datasets  
 differ only in lower/upper case. But user has to manually specify, that he/she wants to merge 
 by column "gender" from data1 and by column "Gender" from data2. We can get rid of it by 
-converting all column names in lower case. We'll do it at loading stage.
+converting all column names in lower case. We'll do it at loading stage inside of our function.
 
 ```R
 read1 <- function(filename) {
@@ -88,4 +86,27 @@ read1 <- function(filename) {
   colnames(data) <- tolower(colnames(data))
   data
 }
+```
+
+## Let's switch from foreign to haven
+
+Suppose, for reading SPSS-files we decided to switch from base `foreing` package 
+to [new Hadley's `haven`](https://github.com/hadley/haven). All we need is to change 
+our function.
+
+```R
+read1 <- function(filename) {
+  data <- haven::read_sav(filename)
+  colnames(data) <- tolower(colnames(data))
+  data
+}
+```
+
+And following code remains untouched.
+
+```R
+Food        <- read1("Food.sav")
+Country_NCT <- read1("country_nct.sav")
+Household   <- read1("HH_ADEPT.sav")
+Individual  <- read1("HM.sav")
 ```
