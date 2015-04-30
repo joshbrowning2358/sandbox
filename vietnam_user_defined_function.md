@@ -1,4 +1,8 @@
-Let me provide an example of using self-created R function.
+# Example of using of user-defined R-function
+
+Let me provide an example of applying of user-created R function.
+
+## Base point
 
 In original code we have following relevant lines:
 
@@ -13,6 +17,7 @@ Individual = read.spss("HM.sav",to.data.frame=TRUE,use.value.labels=FALSE)
 Prices = read.csv("Prices.csv")
 Household = merge(Household,Prices,by.x=c("month"),by.y=c("Month"))
 ```
+## Wrap read.spss() into our function
 
 Here we repeat the same parameters `to.data.frame=TRUE,use.value.labels=FALSE` in each call of read.spss(). If we want to change one parameter we have to do 4 manual changes in our code. Let's create a function and run it for our files.
 
@@ -32,6 +37,8 @@ Individual  <- read1("HM.sav")
 ```
 
 We can improve it more in several way.
+
+## Don't load library when it's possible
 
 Firstly, we can avoid loading of foreign library: we use from the
 package only one function and only in one place. Better approach is not
@@ -53,6 +60,8 @@ read1 <- function(filename) {
 }
 ```
 
+## Get rid of warnings
+
 Next improvement could be to kill off warnings genereted by `read.spss()` while it 
 reads in SPSS-files. I don't remember cases where `read.spss()` doesn't generate such 
 warnings, so it's safe to supress them and make running of your code more clear.
@@ -64,6 +73,7 @@ read1 <- function(filename) {
                                       use.value.labels = FALSE))
 }
 ```
+## Lower case for column names
 
 Later in the code there are several mergins. In some cases column names in datasets are 
 differ only in lower/upper case. But user has to manually specify, that he/she wants to merge 
