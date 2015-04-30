@@ -2,7 +2,7 @@ Let me provide an example of using self-created R function.
 
 In original code we have following relevant lines:
 
-```
+```R
 library(foreign)
 
 # Read in data sets
@@ -14,9 +14,9 @@ Prices = read.csv("Prices.csv")
 Household = merge(Household,Prices,by.x=c("month"),by.y=c("Month"))
 ```
 
-Here we repeat the same parameters (,to.data.frame=TRUE,use.value.labels=FALSE) in each call of read.spss(). If we want to change one parameter we have to do 4 manual changes in our code. Let's create a function and run it for our files.
+Here we repeat the same parameters `to.data.frame=TRUE,use.value.labels=FALSE` in each call of read.spss(). If we want to change one parameter we have to do 4 manual changes in our code. Let's create a function and run it for our files.
 
-```
+```R
 library(foreign)
 
 read1 <- function(filename) {
@@ -40,12 +40,12 @@ adds to your R-workspace bunch of its functions. And there could be
 conflicts between functions with similar names but from different
 packages.
 
-You can call function without loading library with double colon foreign::read.spss() 
+You can call function without loading library with double colon `foreign::read.spss()` 
 
 Additional bonus here, that future reader of your code will easily
 understand from which package this function is.
 
-```
+```R
 read1 <- function(filename) {
   foreign::read.spss(filename, 
                      to.data.frame = TRUE, 
@@ -53,4 +53,29 @@ read1 <- function(filename) {
 }
 ```
 
-Next improvement is 
+Next improvement could be to kill off warnings genereted by `read.spss()` while it 
+reads in SPSS-files. I don't remember cases where `read.spss()` doesn't generate such 
+warnings, so it's safe to supress them and make running of your code more clear.
+
+```R
+read1 <- function(filename) {
+  suppressWarnings(foreign::read.spss(filename, 
+                                      to.data.frame = TRUE, 
+                                      use.value.labels = FALSE))
+}
+```
+
+Later in the code there are several mergins. In some cases column names in datasets are 
+differ only in lower/upper case. But user has to manually specify, that he/she wants to merge 
+by column "gender" from data1 and by column "Gender" from data2. We can get rid of it by 
+converting all column names in lower case. We'll do it at loading stage.
+
+```R
+read1 <- function(filename) {
+  data <- suppressWarnings(foreign::read.spss(filename, 
+                                      to.data.frame = TRUE, 
+                                      use.value.labels = FALSE))
+  colnames(data) <- tolower(colnames(data))
+  data
+}
+```
