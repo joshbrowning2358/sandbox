@@ -1,4 +1,4 @@
-utline:
+## Outline:
 ## 1. Connect to Oracle database
 ## 2. Connect to Microsoft SQL Server database
 ## 3. sqldf package
