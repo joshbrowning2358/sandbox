@@ -1,0 +1,335 @@
+FAOCode,ISO,Country,WB_name,WB_code,Region,Regioncode,Region2,CPIRegion,CPIRegCode,CPISubRegCode,Subregion,Subregioncode,Developing,LLDC,LDC,LIFDC,NFIDC,SIDS,OECD,EU,Annex I countries,Non-Annex I countries,MAFAP,BRICS,FAOmember,Private,IO,IFI,ODA,DAC,CRS_recipient,CRScode,CRSname
+1,AM,Armenia,Armenia,ARM,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,610,Armenia
+2,AF,Afghanistan,Afghanistan,AFG,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,625,Afghanistan
+3,AL,Albania,Albania,ALB,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,71,Albania
+4,DZ,Algeria,Algeria,DZA,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,2,1,130,Algeria
+5,AS,American Samoa,American Samoa,ASM,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,,0,0,,American Samoa
+6,AD,Andorra,Andorra,AND,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,,0,0,,Andorra
+7,AO,Angola,Angola,AGO,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,225,Angola
+8,AG,Antigua and Barbuda,Antigua and Barbuda,ATG,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,377,Antigua and Barbuda
+9,AR,Argentina,Argentina,ARG,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,425,Argentina
+10,AU,Australia,Australia,AUS,Oceania,5500,Oceania,Oceania,6,60,Australia & New Zealand,5501,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,,1,0,801,Australia
+11,AT,Austria,Austria,AUT,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,1,0,1,Austria
+12,BS,Bahamas,"Bahamas, The",BHS,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,,0,0,328,Bahamas
+13,BH,Bahrain,Bahrain,BHR,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,0,530,Bahrain
+14,BB,Barbados,Barbados,BRB,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,0,329,Barbados
+16,BD,Bangladesh,Bangladesh,BGD,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,666,Bangladesh
+17,BM,Bermuda,Bermuda,BMU,Americas,5200,Northern America,Northern America,3,31,Northern America,5203,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,0,331,Bermuda
+18,BT,Bhutan,Bhutan,BTN,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,630,Bhutan
+19,BO,Bolivia (Plurinational State of),Bolivia,BOL,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,428,Bolivia
+20,BW,Botswana,Botswana,BWA,Africa,5100,Africa,Africa,1,11,Southern Africa,5104,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,227,Botswana
+21,BR,Brazil,Brazil,BRA,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,0,1,0,0,1,0,0,1,1,0,0,0,,0,1,431,Brazil
+22,AW,Aruba,Aruba,ABW,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,0,373,Aruba
+23,BZ,Belize,Belize,BLZ,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,352,Belize
+24,IO,British Indian Ocean Territory,,,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,0,,British Indian Ocean Territory
+25,SB,Solomon Islands,Solomon Islands,SLB,Oceania,5500,Oceania,Oceania,6,61,Melanesia,5502,1,0,1,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,866,Solomon Islands
+26,BN,Brunei Darussalam,Brunei Darussalam,BRN,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,0,725,Brunei
+27,BG,Bulgaria,Bulgaria,BGR,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,2,0,72,Bulgaria
+28,MM,Myanmar,Myanmar,MMR,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,635,Myanmar
+29,BI,Burundi,Burundi,BDI,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,228,Burundi
+32,CM,Cameroon,Cameroon,CMR,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,229,Cameroon
+33,CA,Canada,Canada,CAN,Americas,5200,Northern America,Northern America,3,31,Northern America,5203,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,,1,0,301,Canada
+35,CV,Cabo Verde,Cape Verde,CPV,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,230,Cape Verde
+36,KY,Cayman Islands,Cayman Islands,CYM,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,,0,0,386,Cayman Islands
+37,CF,Central African Republic,Central African Republic,CAF,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,231,Central African Rep.
+38,LK,Sri Lanka,Sri Lanka,LKA,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,640,Sri Lanka
+39,TD,Chad,Chad,TCD,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,1,1,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,232,Chad
+40,CL,Chile,Chile,CHL,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,434,Chile
+41,,"China, mainland",,,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,2,1,,
+42,CX,Christmas Island,,,Oceania,5500,Oceania,Oceania,6,60,Australia & New Zealand,5501,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,,0,0,,Christmas Island
+43,CC,Cocos (Keeling) Islands,,,Oceania,5500,Oceania,Oceania,6,60,Australia & New Zealand,5501,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,0,0,,Cocos (Keeling) Islands
+44,CO,Colombia,Colombia,COL,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,437,Colombia
+45,KM,Comoros,Comoros,COM,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,233,Comoros
+46,CG,Congo,"Congo, Rep.",COG,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,0,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,234,"Congo, Rep."
+47,CK,Cook Islands,Costa Rica,CRI,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,1,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,831,Cook Islands
+48,CR,Costa Rica,Cote d'Ivoire,CIV,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,336,Costa Rica
+49,CU,Cuba,Curacao,CUW,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,338,Cuba
+50,CY,Cyprus,Cyprus,CYP,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,2,0,30,Cyprus
+51,..,Czechoslovakia,,,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,1,0,68,Czech Republic
+52,AZ,Azerbaijan,Azerbaijan,AZE,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,611,Azerbaijan
+53,BJ,Benin,Benin,BEN,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,236,Benin
+54,DK,Denmark,Denmark,DNK,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,1,0,3,Denmark
+55,DM,Dominica,Dominica,DMA,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,378,Dominica
+56,DO,Dominican Republic,Dominican Republic,DOM,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,340,Dominican Republic
+57,BY,Belarus,Belarus,BLR,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,86,Belarus
+58,EC,Ecuador,Ecuador,ECU,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,440,Ecuador
+59,EG,Egypt,"Egypt, Arab Rep.",EGY,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,142,Egypt
+60,SV,El Salvador,El Salvador,SLV,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,342,El Salvador
+61,GQ,Equatorial Guinea,Equatorial Guinea,GNQ,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,245,Equatorial Guinea
+62,..,Ethiopia PDR,,,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,,0,0,,Ethiopia PDR
+63,EE,Estonia,Estonia,EST,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,2,0,82,Estonia
+64,FO,Faroe Islands,Faeroe Islands,FRO,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,0,0,,Faroe Islands
+65,FK,Falkland Islands (Malvinas),,,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,,0,0,443,Falkland Islands (Malvinas)
+66,FJ,Fiji,Fiji,FJI,Oceania,5500,Oceania,Oceania,6,61,Melanesia,5502,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,832,Fiji
+67,FI,Finland,Finland,FIN,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,1,0,18,Finland
+68,FR,France,France,FRA,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,1,0,4,France
+69,GF,French Guiana,,,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,,0,0,,French Guiana
+70,PF,French Polynesia,French Polynesia,PYF,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,,0,0,840,French Polynesia
+72,DJ,Djibouti,Djibouti,DJI,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,1,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,274,Djibouti
+73,GE,Georgia,Georgia,GEO,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,612,Georgia
+74,GA,Gabon,Gabon,GAB,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,239,Gabon
+75,GM,Gambia,"Gambia, The",GMB,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,240,Gambia
+79,DE,Germany,Germany,DEU,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,1,0,5,Germany
+80,BA,Bosnia and Herzegovina,Bosnia and Herzegovina,BIH,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,0,1,64,Bosnia-Herzegovina
+81,GH,Ghana,Ghana,GHA,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,,0,1,241,Ghana
+82,GI,Gibraltar,,,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,,0,0,35,Gibraltar
+83,KI,Kiribati,Kiribati,KIR,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,836,Kiribati
+84,GR,Greece,Greece,GRC,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,40,Greece
+85,GL,Greenland,Greenland,GRL,Americas,5200,Northern America,Northern America,3,31,Northern America,5203,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,,0,0,,Greenland
+86,GD,Grenada,Grenada,GRD,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,,0,1,381,Grenada
+87,GP,Guadeloupe,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,,0,0,,Guadeloupe
+88,GU,Guam,Guam,GUM,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,,0,0,,Guam
+89,GT,Guatemala,Guatemala,GTM,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,347,Guatemala
+90,GN,Guinea,Guinea,GIN,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,1,1,0,1,0,0,0,0,0,0,0,1,0,0,0,,0,1,243,Guinea
+91,GY,Guyana,Guyana,GUY,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,446,Guyana
+93,HT,Haiti,Haiti,HTI,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,349,Haiti
+94,VA,Holy See,,,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,,0,0,,Holy See
+95,HN,Honduras,Honduras,HND,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,1,1,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,351,Honduras
+96,HK,"China, Hong Kong SAR","Hong Kong SAR, China",HKG,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,,0,0,735,"Hong Kong, China"
+97,HU,Hungary,Hungary,HUN,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,2,0,75,Hungary
+98,HR,Croatia,Cuba,CUB,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,,0,0,62,Croatia
+99,IS,Iceland,Iceland,ISL,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,1,0,20,Iceland
+100,IN,India,India,IND,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,,0,1,645,India
+101,ID,Indonesia,Indonesia,IDN,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,738,Indonesia
+102,IR,Iran (Islamic Republic of),"Iran, Islamic Rep.",IRN,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,540,Iran
+103,IQ,Iraq,Iraq,IRQ,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,2,1,543,Iraq
+104,IE,Ireland,Ireland,IRL,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,1,0,21,Ireland
+105,IL,Israel,Israel,ISR,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,1,1,0,0,0,0,1,0,0,1,0,0,0,,2,0,546,Israel
+106,IT,Italy,Italy,ITA,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,1,0,6,Italy
+107,CI,Cote d'Ivoire,Croatia,HRV,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,247,Cote d'Ivoire
+108,KZ,Kazakhstan,Kazakhstan,KAZ,Asia,5300,Asia & Pacific,Asia,4,45,Central Asia,5301,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,613,Kazakhstan
+109,JM,Jamaica,Jamaica,JAM,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,354,Jamaica
+110,JP,Japan,Japan,JPN,Asia,5300,Other Developed,Asia,4,41,Eastern Asia,5302,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,701,Japan
+112,JO,Jordan,Jordan,JOR,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,,0,1,549,Jordan
+113,KG,Kyrgyzstan,Kyrgyz Republic,KGZ,Asia,5300,Asia & Pacific,Asia,4,45,Central Asia,5301,1,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,614,Kyrgyz Republic
+114,KE,Kenya,Kenya,KEN,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,0,0,1,0,0,0,1,1,0,1,0,0,0,,0,1,248,Kenya
+115,KH,Cambodia,Cambodia,KHM,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,728,Cambodia
+116,KP,Democratic People's Republic of Korea,"Korea, Dem. Rep.",PRK,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,740,"Korea, Dem. Rep."
+117,KR,Republic of Korea,"Korea, Rep.",KOR,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,0,0,0,0,0,0,1,0,1,0,0,1,0,0,0,,1,0,742,Korea
+118,KW,Kuwait,Kuwait,KWT,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,2,0,552,Kuwait
+119,LV,Latvia,Latvia,LVA,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,2,0,83,Latvia
+120,LA,Lao People's Democratic Republic,Lao PDR,LAO,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,745,Laos
+121,LB,Lebanon,Lebanon,LBN,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,555,Lebanon
+122,LS,Lesotho,Lesotho,LSO,Africa,5100,Africa,Africa,1,11,Southern Africa,5104,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,249,Lesotho
+123,LR,Liberia,Liberia,LBR,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,251,Liberia
+124,LY,Libya,Libya,LBY,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,2,1,133,Libya
+125,LI,Liechtenstein,Liechtenstein,LIE,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,2,0,70,Liechtenstein
+126,LT,Lithuania,Lithuania,LTU,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,2,0,84,Lithuania
+127,MH,Marshall Islands,Marshall Islands,MHL,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,,0,1,859,Marshall Islands
+128,MO,"China, Macao SAR","Macao SAR, China",MAC,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,0,1,0,1,0,0,0,0,1,0,1,0,0,0,0,,0,0,748,Macao
+129,MG,Madagascar,Madagascar,MDG,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,252,Madagascar
+130,MW,Malawi,Malawi,MWI,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,1,1,1,1,0,0,0,0,1,1,0,1,0,0,0,,0,1,253,Malawi
+131,MY,Malaysia,Malaysia,MYS,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,751,Malaysia
+132,MV,Maldives,Maldives,MDV,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,1,0,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,655,Maldives
+133,ML,Mali,Mali,MLI,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,1,0,0,1,0,0,0,0,1,1,0,1,0,0,0,,0,1,255,Mali
+134,MT,Malta,Malta,MLT,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,2,0,45,Malta
+135,MQ,Martinique,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,0,,Martinique
+136,MR,Mauritania,Mauritania,MRT,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,256,Mauritania
+137,MU,Mauritius,Mauritius,MUS,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,257,Mauritius
+138,MX,Mexico,Mexico,MEX,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,0,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,358,Mexico
+140,MC,Monaco,Monaco,MCO,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,0,0,,Monaco
+141,MN,Mongolia,Mongolia,MNG,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,753,Mongolia
+142,MS,Montserrat,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,1,385,Montserrat
+143,MA,Morocco,Morocco,MAR,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,136,Morocco
+144,MZ,Mozambique,Mozambique,MOZ,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,,0,1,259,Mozambique
+145,FM,Micronesia (Federated States of),"Micronesia, Fed. Sts.",FSM,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,0,1,860,"Micronesia, Fed. States"
+146,MD,Republic of Moldova,Moldova,MDA,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,,0,1,93,Moldova
+147,NA,Namibia,Namibia,NAM,Africa,5100,Africa,Africa,1,11,Southern Africa,5104,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,275,Namibia
+148,NR,Nauru,,,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,845,Nauru
+149,NP,Nepal,Nepal,NPL,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,660,Nepal
+150,NL,Netherlands,Netherlands,NLD,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,1,0,7,Netherlands
+151,AN,Netherlands Antilles,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,,0,0,361,Netherlands Antilles
+153,NC,New Caledonia,New Caledonia,NCL,Oceania,5500,Oceania,Oceania,6,61,Melanesia,5502,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,,0,0,850,New Caledonia
+154,MK,The former Yugoslav Republic of Macedonia,"Macedonia, FYR",MKD,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,0,1,66,Former Yugoslav Republic of Macedonia (FYROM)
+154,MK,The former Yugoslav Republic of Macedonia,"Macedonia, FYR",MKD,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,0,0,88,States Ex-Yugoslavia unspecified
+155,VU,Vanuatu,Vanuatu,VUT,Oceania,5500,Oceania,Oceania,6,61,Melanesia,5502,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,854,Vanuatu
+156,NZ,New Zealand,New Zealand,NZL,Oceania,5500,Oceania,Oceania,6,60,Australia & New Zealand,5501,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,,1,0,820,New Zealand
+157,NI,Nicaragua,Nicaragua,NIC,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,364,Nicaragua
+158,NE,Niger,Niger,NER,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,260,Niger
+159,NG,Nigeria,Nigeria,NGA,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,1,1,1,1,0,0,0,0,1,1,0,1,0,0,0,,0,1,261,Nigeria
+160,NU,Niue,,,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,856,Niue
+161,NF,Norfolk Island,,,Oceania,5500,Oceania,Oceania,6,60,Australia & New Zealand,5501,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,,0,0,,Norfolk Island
+162,NO,Norway,Norway,NOR,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,1,0,8,Norway
+163,MP,Northern Mariana Islands,Northern Mariana Islands,MNP,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,,0,0,858,Northern Marianas
+164,..,Pacific Islands Trust Territory,,,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,,0,0,,Pacific Islands Trust Territory
+165,PK,Pakistan,Pakistan,PAK,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,665,Pakistan
+166,PA,Panama,Panama,PAN,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,366,Panama
+167,CZ,Czech Republic,Czech Republic,CZE,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,0,0,68,Czech Republic
+168,PG,Papua New Guinea,Papua New Guinea,PNG,Oceania,5500,Oceania,Oceania,6,61,Melanesia,5502,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,,0,1,862,Papua New Guinea
+169,PY,Paraguay,Paraguay,PRY,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,451,Paraguay
+170,PE,Peru,Peru,PER,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,0,1,454,Peru
+171,PH,Philippines,Philippines,PHL,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,755,Philippines
+172,PN,Pitcairn Islands,,,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,1,1,1,1,0,0,0,1,0,0,0,0,0,0,,0,0,,Pitcairn Islands
+173,PL,Poland,Poland,POL,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,76,Poland
+174,PT,Portugal,Portugal,PRT,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,9,Portugal
+175,GW,Guinea-Bissau,Guinea-Bissau,GNB,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,244,Guinea-Bissau
+176,TL,Timor-Leste,Timor-Leste,TLS,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,1,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,0,1,765,Timor-Leste
+177,PR,Puerto Rico,Puerto Rico,PRI,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,,0,0,,Puerto Rico
+178,ER,Eritrea,Eritrea,ERI,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,,0,1,271,Eritrea
+179,QA,Qatar,Qatar,QAT,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,1,0,1,1,0,0,0,1,0,0,1,0,0,0,,2,0,561,Qatar
+180,PW,Palau,Palau,PLW,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,,0,1,861,Palau
+181,ZW,Zimbabwe,Zimbabwe,ZWE,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,265,Zimbabwe
+182,RE,Reunion,,,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,,0,0,,Reunion
+183,RO,Romania,Romania,ROU,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,2,0,77,Romania
+184,RW,Rwanda,Rwanda,RWA,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,266,Rwanda
+185,RU,Russian Federation,Russian Federation,RUS,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0,,2,0,87,Russia
+186,CS,Serbia and Montenegro,,,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,0,,Serbia and Montenegro
+187,SH,"Saint Helena, Ascension and Tristan da Cunha",,,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,0,0,0,0,1,0,0,0,0,0,0,,0,1,276,St. Helena
+188,KN,Saint Kitts and Nevis,St. Kitts and Nevis,KNA,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,0,382,St. Kitts-Nevis
+189,LC,Saint Lucia,St. Lucia,LCA,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,383,St. Lucia
+190,PM,Saint Pierre and Miquelon,,,Americas,5200,Northern America,Northern America,3,31,Northern America,5203,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,,0,0,,Saint Pierre and Miquelon
+191,VC,Saint Vincent and the Grenadines,St. Vincent and the Grenadines,VCT,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,384,St.Vincent & Grenadines
+192,SM,San Marino,San Marino,SMR,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,,0,0,,San Marino
+193,ST,Sao Tome and Principe,Sao Tome and Principe,STP,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,268,Sao Tome & Principe
+194,SA,Saudi Arabia,Saudi Arabia,SAU,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,2,0,566,Saudi Arabia
+195,SN,Senegal,Senegal,SEN,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,,0,1,269,Senegal
+196,SC,Seychelles,Seychelles,SYC,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,270,Seychelles
+197,SL,Sierra Leone,Sierra Leone,SLE,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,272,Sierra Leone
+198,SI,Slovenia,Slovenia,SVN,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,61,Slovenia
+199,SK,Slovakia,Slovak Republic,SVK,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,1,0,69,Slovak Republic
+200,SG,Singapore,Singapore,SGP,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,,0,0,761,Singapore
+201,SO,Somalia,Somalia,SOM,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,273,Somalia
+202,ZA,South Africa,South Africa,ZAF,Africa,5100,Africa,Africa,1,11,Southern Africa,5104,1,1,1,1,1,0,0,0,0,1,0,1,1,0,0,0,,0,1,218,South Africa
+203,ES,Spain,Spain,ESP,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,50,Spain
+205,EH,Western Sahara,,,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,,0,0,,Western Sahara
+206,SD,Sudan (former),,,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,,0,0,,Sudan (former)
+207,SR,Suriname,Suriname,SUR,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,,0,1,457,Suriname
+208,TJ,Tajikistan,Tajikistan,TJK,Asia,5300,Asia & Pacific,Asia,4,45,Central Asia,5301,1,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,615,Tajikistan
+209,SZ,Swaziland,Swaziland,SWZ,Africa,5100,Africa,Africa,1,11,Southern Africa,5104,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,280,Swaziland
+210,SE,Sweden,Sweden,SWE,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,1,0,10,Sweden
+211,CH,Switzerland,Switzerland,CHE,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,11,Switzerland
+212,SY,Syrian Arab Republic,Syrian Arab Republic,SYR,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,573,Syria
+213,TM,Turkmenistan,Turkmenistan,TKM,Asia,5300,Asia & Pacific,Asia,4,45,Central Asia,5301,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,616,Turkmenistan
+214,TW,"China, Taiwan Province of",,,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,,0,0,,"China, Taiwan Province of"
+215,TZ,United Republic of Tanzania,Tanzania,TZA,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,1,1,1,1,0,0,0,0,1,1,0,1,0,0,0,,0,1,282,Tanzania
+216,TH,Thailand,Thailand,THA,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,2,1,764,Thailand
+217,TG,Togo,Togo,TGO,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,283,Togo
+218,TK,Tokelau,,,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,,0,1,868,Tokelau
+219,TO,Tonga,Tonga,TON,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,1,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,870,Tonga
+220,TT,Trinidad and Tobago,Trinidad and Tobago,TTO,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,0,375,Trinidad and Tobago
+221,OM,Oman,Oman,OMN,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,0,558,Oman
+222,TN,Tunisia,Tunisia,TUN,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,139,Tunisia
+223,TR,Turkey,Turkey,TUR,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,,2,1,55,Turkey
+224,TC,Turks and Caicos Islands,Turks and Caicos Islands,TCA,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,,0,0,387,Turks and Caicos Islands
+225,AE,United Arab Emirates,United Arab Emirates,ARE,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,2,0,576,United Arab Emirates
+226,UG,Uganda,Uganda,UGA,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,1,1,0,0,0,0,1,1,0,1,0,0,0,,0,1,285,Uganda
+227,TV,Tuvalu,Tuvalu,TUV,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,1,0,1,1,0,0,0,1,0,0,1,0,0,0,,0,1,872,Tuvalu
+228,,USSR,,,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,,0,0,,USSR
+229,GB,United Kingdom,United Kingdom,GBR,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,,1,0,12,United Kingdom
+230,UA,Ukraine,Ukraine,UKR,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,85,Ukraine
+231,US,United States of America,United States,USA,Americas,5200,Northern America,Northern America,3,31,Northern America,5203,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,1,0,302,United States
+233,BF,Burkina Faso,Burkina Faso,BFA,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,0,1,1,1,0,0,0,0,1,1,0,1,0,0,0,,0,1,287,Burkina Faso
+234,UY,Uruguay,Uruguay,URY,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,460,Uruguay
+235,UZ,Uzbekistan,Uzbekistan,UZB,Asia,5300,Asia & Pacific,Asia,4,45,Central Asia,5301,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,617,Uzbekistan
+236,VE,Venezuela (Bolivarian Republic of),"Venezuela, RB",VEN,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,463,Venezuela
+237,VN,Viet Nam,Vietnam,VNM,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,,0,1,769,Vietnam
+238,ET,Ethiopia,Ethiopia,ETH,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,1,1,1,1,0,0,0,0,1,1,0,1,0,0,0,,0,1,238,Ethiopia
+239,VG,British Virgin Islands,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,,0,0,388,Virgin Islands (UK)
+239,,British Virgin Islands,Virgin Islands (U.S.),VIR,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+240,VI,United States Virgin Islands,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,,0,0,,United States Virgin Islands
+242,WK,Wake Island,,,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,0,0,,Wake Island
+243,WF,Wallis and Futuna Islands,,,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,,0,1,876,Wallis & Futuna
+244,WS,Samoa,Samoa,WSM,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,880,Samoa
+246,,Yemen Ar Rp,,,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,580,Yemen
+247,,Yemen Dem,,,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,580,Yemen
+248,,Yugoslav SFR,,,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,,0,0,57,Kosovo
+249,,Yemen,"Yemen, Rep.",YEM,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,580,Yemen
+250,YE,Democratic Republic of the Congo,"Congo, Dem. Rep.",COD,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,235,"Congo, Dem. Rep."
+251,ZM,Zambia,Zambia,ZMB,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,288,Zambia
+255,BE,Belgium,Belgium,BEL,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,0,2,Belgium
+256,LU,Luxembourg,Luxembourg,LUX,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,0,22,Luxembourg
+258,AI,Anguilla,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,,0,0,376,Anguilla
+259,,Channel Islands,Channel Islands,CHI,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,,0,0,,Channel Islands
+260,AJ,Svalbard and Jan Mayen Islands,,,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,,0,0,,Svalbard and Jan Mayen Islands
+264,IM,Isle of Man,Isle of Man,IMN,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,0,0,,Isle of Man
+270,YT,Mayotte,,,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,1,1,1,0,0,0,1,0,0,0,0,0,0,,0,0,258,Mayotte
+272,RS,Serbia,Serbia,SRB,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,63,Serbia
+273,ME,Montenegro,Montenegro,MNE,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,,0,1,65,Montenegro
+275,,Kosovo,Kosovo,KSV,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+276,SD,Sudan,Sudan,SDN,Africa,5100,Africa,Africa,1,13,Northern Africa,5103,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,,0,1,278,Sudan
+277,SS,South Sudan,South Sudan,SSD,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,279,South Sudan
+280,,Sint Maarten (Dutch Part),Sint Maarten (Dutch part),SXM,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+281,,Saint-Martin (French Part),St. Martin (French part),MAF,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+299,,State of Palestine,West Bank and Gaza,PSE,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,1,550,West Bank & Gaza Strip
+299,,State of Palestine,,,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,,0,0,,State of Palestine
+351,,China,China,CHN,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,0,1,730,China
+351,,China,China,CHN,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,,2,1,732,Chinese Taipei
+1313,,GGGI,,,World,5000,World,World,,,,,,,,,,,,,,,,,,,,,,,,1313,GGGI
+4999,,Developing countries,,,World,5000,World,World,,,,,1,,,,,,,,,,,,1,,,,,,1,998,"Developing countries, unspecified"
+5000,,World,,,World,5000,World,World,,,,,,,,,,,,,,,,,1,,,,,,1,,
+5100,,Africa,,,Africa,5100,Africa,Africa,1,,,,1,,,,,,,,,,,,1,,,,,,1,189,"North of Sahara, regional"
+5100,,Africa,,,Africa,5100,Africa,Africa,1,,,,1,,,,,,,,,,,,1,,,,,,1,289,"South of Sahara, regional"
+5100,,Africa,,,Africa,5100,Africa,Africa,1,,,,1,,,,,,,,,,,,1,,,,,,1,298,"Africa, regional"
+5101,,Eastern Africa,,,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,,,,,,,,,,,,1,,,,,,1,237,East African Community
+5101,,Eastern Africa,,,Africa,5100,Africa,Africa,1,15,Eastern Africa,5101,1,,,,,,,,,,,,1,,,,,,1,,Eastern Africa
+5102,,Middle Africa,,,Africa,5100,Africa,Africa,1,14,Central Africa,5102,1,,,,,,,,,,,,1,,,,,,1,,Middle Africa
+5102,,Northern Africa,,,Africa,5100,Africa,Africa,1,13,Northern Africa,5102,1,,,,,,,,,,,,1,,,,,,1,5103,"North of Sahara, regional"
+5104,,Southern Africa,,,Africa,5100,Africa,Africa,1,11,Southern Africa,5104,1,,,,,,,,,,,,1,,,,,,1,,Southern Africa
+5105,,Western Africa,,,Africa,5100,Africa,Africa,1,12,Western Africa,5105,1,,,,,,,,,,,,1,,,,,,1,,Western Africa
+5200,,Americas,,,Americas,5200,Americas,Americas,,,,,,,,,,,,,,,,,1,,,,,,1,389,"North & Central America, regional"
+5200,,Americas,,,Americas,5200,Americas,Americas,,,,,,,,,,,,,,,,,1,,,,,,1,498,"America, regional"
+5200,,Americas,,,Americas,5200,Americas,Americas,,,,,,,,,,,,,,,,,1,,,,,,1,,Latin America and the Caribbean
+5203,,Northern America,,,Americas,5200,Northern America,Northern America,3,31,Northern America,5203,0,,,,,,,,,,,,1,,,,,,1,,Northern America
+5204,,Central America,,,Americas,5200,Latin America & Caribbean,LAC,2,22,Central America,5204,1,,,,,,,,,,,,1,,,,,,1,,Central America
+5206,,Caribbean,,,Americas,5200,Latin America & Caribbean,LAC,2,23,Caribbean,5206,1,,,,,,,,,,,,1,,,,,,1,380,"West Indies, regional"
+5207,,South America,,,Americas,5200,Latin America & Caribbean,LAC,2,21,South America,5207,1,,,,,,,,,,,,1,,,,,,1,489,"South America, regional"
+5300,,Asia,,,Asia,5300,Asia & Pacific,Asia,4,,,,,,,,,,,,,,,,1,,,,,,1,689,"South & Central Asia, regional"
+5300,,Asia,,,Asia,5300,Asia & Pacific,Asia,4,,,,,,,,,,,,,,,,1,,,,,,1,798,"Asia, regional"
+5301,,Central Asia,,,Asia,5300,Asia & Pacific,Asia,4,45,Central Asia,5301,,,,,,,,,,,,,1,,,,,,1,619,"Central Asia, regional"
+5302,,Eastern Asia,,,Asia,5300,Asia & Pacific,Asia,4,41,Eastern Asia,5302,,,,,,,,,,,,,1,,,,,,1,789,"Far East Asia, regional"
+5303,,Southern Asia,,,Asia,5300,Asia & Pacific,Asia,4,44,Southern Asia,5303,1,,,,,,,,,,,,1,,,,,,1,679,"South Asia, regional"
+5304,,South-Eastern Asia,,,Asia,5300,Asia & Pacific,Asia,4,42,South-Eastern Asia,5304,1,,,,,,,,,,,,1,,,,,,1,,South-Eastern Asia
+5305,,Western Asia,,,Asia,5300,Asia & Pacific,Asia,4,43,Western Asia,5305,1,,,,,,,,,,,,1,,,,,,1,589,"Middle East, regional"
+5400,,Europe,,,Europe,5400,Europe,Europe,5,,,,0,,,,,,,,,,,,1,,,,,,1,89,"Europe, regional"
+5401,,Eastern Europe,,,Europe,5400,Europe,Europe,5,52,Eastern Europe,5401,0,,,,,,,,,,,,1,,,,,,1,,Eastern Europe
+5402,,Northern Europe,,,Europe,5400,Europe,Europe,5,53,Northern Europe,5402,0,,,,,,,,,,,,1,,,,,,1,,Northern Europe
+5403,,Southern Europe,,,Europe,5400,Europe,Europe,5,51,Southern Europe,5403,0,,,,,,,,,,,,1,,,,,,1,,Southern Europe
+5404,,Western Europe,,,Europe,5400,Europe,Europe,5,54,Western Europe,5404,0,,,,,,,,,,,,1,,,,,,1,,Western Europe
+5500,,Oceania,,,Oceania,5500,Oceania,Oceania,6,,,,,,,,,,,,,,,,1,,,,,,1,,Oceania
+5501,,Australia & New Zealand,,,Oceania,5500,Oceania,Oceania,6,60,Australia & New Zealand,5501,0,,,,,,,,,,,,1,,,,,,1,889,Australia and New Zealand
+5502,,Melanesia,,,Oceania,5500,Oceania,Oceania,6,61,Melanesia,5502,1,,,,,,,,,,,,1,,,,,,1,,Melanesia
+5503,,Micronesia,,,Oceania,5500,Oceania,Oceania,6,62,Micronesia,5503,1,,,,,,,,,,,,1,,,,,,1,,Micronesia
+5504,,Polynesia,,,Oceania,5500,Oceania,Oceania,6,63,Polynesia,5504,1,,,,,,,,,,,,1,,,,,,1,,Polynesia
+8001,,AfDB,,,Africa,5100,World,,1,,,,,,,,,,,,,,,,,,1,1,1,,,913,AfDB
+8002,,AfDF,,,Africa,5100,World,,1,,,,,,,,,,,,,,,,,,1,1,1,,,914,AfDF
+8003,,Arab Fund (AFESD),,,,5100,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,921,Arab Fund (AFESD)
+8004,,AsDB,,,Asia,5300,World,,4,,,,,,,,,,,,,,,,,,1,1,1,,,915,AsDB
+8005,,AsDB Special Funds,,,Asia,5300,World,,4,,,,,,,,,,,,,,,,,,1,1,1,,,916,AsDB Special Funds
+8006,,BADEA,,,Africa,5100,World,,1,,,,,,,,,,,,,,,,,,1,1,1,,,953,BADEA
+8007,,CarDB,,,Americas,5200,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,906,CarDB
+8008,,EBRD,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,990,EBRD
+8009,,EU Institutions,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,918,EU Institutions
+8010,,GAVI,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,1311,GAVI
+8011,,GEF,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,811,GEF
+8012,,Global Fund,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,1312,Global Fund
+8013,,IAEA,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,944,IAEA
+8014,,IBRD,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,901,IBRD
+8015,,IDA,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,905,IDA
+8016,,IDB,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,909,IDB
+8017,,IDB Sp.Fund,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,912,IDB Sp.Fund
+8018,,IFAD,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,988,IFAD
+8019,,IFC,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,903,IFC
+8020,,IMF,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,907,IMF
+8021,,IMF (Concessional Trust Funds),,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,958,IMF (Concessional Trust Funds)
+8022,,Isl.Dev Bank,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,976,Isl.Dev Bank
+8023,,Montreal Protocol,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,812,Montreal Protocol
+8024,,Nordic Dev. Fund,,,Europe,5400,World,,,,,,,,,,,,,,,,,,,,,1,1,,,104,Nordic Dev.Fund
+8025,,OFID,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,951,OFID
+8026,,OSCE,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,978,OSCE
+8027,,UNAIDS,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,971,UNAIDS
+8028,,UNDP,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,959,UNDP
+8029,,UNECE,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,948,UNECE
+8030,,UNEP,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,807,UNEP
+8031,,UNFPA,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,974,UNFPA
+8032,,UNHCR,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,967,UNHCR
+8033,,UNICEF,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,963,UNICEF
+8034,,UNPBF,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,923,UNPBF
+8035,,UNRWA,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,964,UNRWA
+8036,,UNTA,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,960,UNTA
+8037,,WFP,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,966,WFP
+8038,,WHO,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,928,WHO
+8039,,FAO,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,932,FAO
+9001,,Bill & Melinda Gates Foundation,,,World,5000,World,,,,,,,,,,,,,,,,,,,1,,,1,,,1601,Bill & Melinda Gates Foundation
+8040,,CEDB,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,926,Council of Europe Development Bank
+8041,,CIF,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,1,1,,,1011,Climate Investment Funds
+8042,,Adaptation Fund,,,World,5000,World,,,,,,,,,,,,,,,,,,,,1,,1,,,1012,Adaptation Fund
