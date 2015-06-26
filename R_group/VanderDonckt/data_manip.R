@@ -1,34 +1,46 @@
-tm1 <- system.time(
-{
+library("XLConnect")
+
+# Note: you generally don't want to wrap your whole script in a system.time()
+# call.  Instead, write your code and then use something like
+# system.time(source("filename.R"))
+# to measure computation time.
+# tm1 <- system.time(
+# {
 # Section One ----------------------------------------------
-# Load all the variables you need to re-create FinalDataStructure in 1.NAE_DictionaryForMerge.xlsx
+# Load all the variables you need to re-create FinalDataStructure in
+# 1.NAE_DictionaryForMerge.xlsx
 
 # Clean the workspace
 rm(list = ls())
 
 # Set the path and list the files 
 setwd("T:/Team_working_folder/Eco/Macro_AIM/1.AIM_DataSteps/1.2AIM_CapturedData/DataMerge_2015")
+setwd("~/GitHub/sandbox/R_group/VanderDonckt/")
 list.files(path = ".")
 
 # Read FaostatAreas2015.csv & CountryISOcode.csv
-Block1 = read.csv("FaostatAreas2015.csv")
-Block3 = read.csv("CountryISOcode.csv")
-#str(Block1)
-# Print the headings of the 2 files (Block1 & Block3)
-#head(Block1)
-#head(Block3)
+faostatAreas = read.csv("FaostatAreas2015.csv")
+countryCodes = read.csv("CountryISOcode.csv")
+#str(faostatAreas)
+# Print the headings of the 2 files (faostatAreas & countryCodes)
+#head(faostatAreas)
+#head(countryCodes)
 # We need these variables from the 2 files 
-# FAOSTATAreas2015.csv: CountryISOCode  CountryName	CountryFAOCode (Block1)
-# CountryISOcode.csv: CurrencyCode (Block3)
+# FAOSTATAreas2015.csv: CountryISOCode  CountryName	CountryFAOCode (faostatAreas)
+# CountryISOcode.csv: CurrencyCode (countryCodes)
 
 # Change the path in order to read other files
-setwd("T:/Team_working_folder/Eco/Macro_AIM/1.AIM_DataSteps/1.2AIM_CapturedData")  
-library("XLConnect")
+# Edit (JOSH): I just put all the files in the same folder, so I commented out
+# this line.
+# setwd("T:/Team_working_folder/Eco/Macro_AIM/1.AIM_DataSteps/1.2AIM_CapturedData")  
 list.files(path = ".")
 
 # Read 1.NAE_DictionaryForMerge.xlsx (3rd spreadsheet)
 Block2 = loadWorkbook("1.NAE_DictionaryForMerge.xlsx")
-B2 = readWorksheet(Block2, sheet=3)
+# Edit (JOSH): It's easier to skip the first row so that column names come in at
+# the right place.  You have to manually assign one, but that's not bad.
+B2 = readWorksheet(Block2, sheet=3, startRow = 2)
+colnames(B2)[colnames(B2) == "Col12"] = "In.AIM.DB."
 # Print the headings of Block2
 #head(Block2)
 # We need these variables from the file (Block2)
@@ -40,38 +52,71 @@ B2 = readWorksheet(Block2, sheet=3)
 # Files cleaning; selecting the desired variables in each file
 
 # Remove the rows with empty cells in Block1, e.g., USSR has no ISO code, hence we drop it
-PrimoBlocco <- data.frame(CountryISOCode = c(Block1[2]), CountryName = c(Block1[3]), CountryFAOCode = c(Block1[1]))
-PrimoBlocco[PrimoBlocco == ""] <- NA
-PrimoBlocco <- subset(PrimoBlocco, rowSums(is.na(PrimoBlocco))==0)
+faostatAreas <- faostatAreas[, c("ISO", "Country", "FAOCode")]
+colnames(faostatAreas) <- c("CountryISOCode", "CountryName", "CountryFAOCode")
+faostatAreas[faostatAreas == ""] <- NA
+faostatAreas <- subset(faostatAreas, rowSums(is.na(faostatAreas))==0)
+# An alternative approach to the above code, that may be a tiny bit faster (as
+# it avoids having to create and then remove NAs):
+filter <- apply(faostatAreas, 1, function(x) any(x == ""))
+faostatAreas <- faostatAreas[!filter, ]
 # Assign to Block1 the desired column names
-colnames(PrimoBlocco) <- c("CountryISOCode", "CountryName", "CountryFAOCode")
-PrimoBlocco <- subset(PrimoBlocco, select=c("CountryISOCode", "CountryName", "CountryFAOCode"))
+# This is already done above
+# colnames(PrimoBlocco) <- c("CountryISOCode", "CountryName", "CountryFAOCode")
+# PrimoBlocco <- subset(PrimoBlocco, select=c("CountryISOCode", "CountryName", "CountryFAOCode"))
 
 # In TerzoBlocco we select the country name and the ISO.4217.Currency.Code
-B3a=Block3[2]
-B3b=Block3[8]
-TerzoBlocco = data.frame(B3a, B3b)
+# Note (JOSH): It's often much safer to refer to variables by name rather than
+# location (i.e. second and eigth column).  This allows you to change the input
+# data without completely messing up the code.
+# B3a=countryCodes[2]
+# B3b=countryCodes[8]
+# TerzoBlocco = data.frame(B3a, B3b)
+countryCodes = countryCodes[, c("Common.Name", "ISO.4217.Currency.Code")]
 
 # Now we merge PrimoBlocco & TerzoBlocco 
 # First we add a 4th column to PrimoBlocco (with NAs)
+PrimoBlocco <- faostatAreas
 PrimoBlocco[,4] <- NA
 
-# Then we start merging PrimoBlocco & TerzoBlocco: the resulting file is PrimoBlocco 
+# Then we start merging faostatAreas & countryCodes: the resulting file is faostatAreas
 # PrimoBlocco <- data.matrix(PrimoBlocco)
 # TerzoBlocco <- data.matrix(TerzoBlocco)
 for (i in 1:nrow(PrimoBlocco)) {  
-  for (j in 1:nrow(TerzoBlocco)) { 
-    if (!length(agrep(PrimoBlocco[i,2],TerzoBlocco[j,1], value = FALSE, fixed = TRUE)==1)) {
+  for (j in 1:nrow(countryCodes)) { 
+    if (!length(agrep(PrimoBlocco[i,2],countryCodes[j,1], value = FALSE, fixed = TRUE)==1)) {
       PrimoBlocco[i,4] <- PrimoBlocco[i,4] 
     } else {  
-      if (agrep(PrimoBlocco[i,2],TerzoBlocco[j,1], value = FALSE, fixed = TRUE)==1) {
-        PrimoBlocco[i,4] <- as.character(TerzoBlocco[j,2]) 
+      if (agrep(PrimoBlocco[i,2],countryCodes[j,1], value = FALSE, fixed = TRUE)==1) {
+        PrimoBlocco[i,4] <- as.character(countryCodes[j,2]) 
       }
     }
   }
 }
+
 # Assign to PrimoBlocco the 4 desired column names
 colnames(PrimoBlocco) <- c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode")
+
+rMerge <- merge(faostatAreas, countryCodes, by.x = "CountryName",
+             by.y = "Common.Name", all.x = TRUE)
+colnames(rMerge)[colnames(rMerge) == "ISO.4217.Currency.Code"] = "CurrencyCode"
+dim(rMerge)
+dim(PrimoBlocco)
+compare = merge(rMerge, PrimoBlocco, by = c("CountryISOCode", "CountryName",
+                                            "CountryFAOCode"),
+                suffixes = c(".merge", ".for"))
+dim(compare)
+View(compare)
+filter = compare$CurrencyCode.merge != compare$CurrencyCode.for
+View(compare[filter, ])
+## Remove the NA's from filter
+filter[is.na(filter)] = FALSE
+## But, we still want to check for differences when one is NA and the ther is
+## not...
+filter = filter |
+    (is.na(compare$CurrencyCode.merge) & !is.na(compare$CurrencyCode.for)) &
+    (is.na(compare$CurrencyCode.for) & !is.na(compare$CurrencyCode.merge))
+View(compare[filter, ])
 
 # Now focus on SecondoBlocco (from B2, i.e., 1.NAE_DictionaryForMerge.xlsx -- 3rd spreadsheet) )
 # In B2, select (for each country) only the 5 variables we are interested in, GFCF, GDP, 3 VA (Total Ec, Agric., Manif.)
@@ -91,42 +136,53 @@ SecondoBlocco = data.frame(a, b, c, d, e, f, g, h)
 # Assign to SecondoBlocco the 8 desired column names
 colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName",  "ISIC",  "IndicatorCode",	"IndicatorName",	"BYear",	"Units",	"OriginalDB")
 
+SecondoBloccoNew <- subset(B2, In.AIM.DB. == "Yes",
+    select = c(ActivityCode, ActivityName, ISIC, IndicatorCode,
+               IndicatorName.1, BYear, Units, OriginalDB))
+SecondoBlocco
+SecondoBloccoNew
+SecondoBlocco == SecondoBloccoNew
+SecondoBlocco <- SecondoBloccoNew
+colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName", "ISIC",
+                             "IndicatorCode", "IndicatorName", "BYear",
+                             "Units", "OriginalDB")
 
 # Section Three ----------------------------------------------
 # Merging PrimoBlocco and SecondoBlocco
 
-# Replicate PrimoBlocco 5 times (5 variables)
-PrimoBloccoRep <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco), simplify=FALSE))
+# # Replicate PrimoBlocco 5 times (5 variables)
+# PrimoBloccoRep <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco), simplify=FALSE))
+# 
+# # The aim here below is to re-arrange PrimoBloccoRep in this order:
+# # 1  AM	Armenia	    1	AMD
+# #	2	 AM	Armenia	    1	AMD
+# #	3	 AM	Armenia	    1	AMD
+# #	4	 AM	Armenia	    1	AMD
+# #	5	 AM	Armenia	    1	AMD
+# #	6	 AF	Afghanistan	2	AFN
+# #	7	 AF	Afghanistan	2	AFN
+# #	8	 AF	Afghanistan	2	AFN
+# #	9	 AF	Afghanistan	2	AFN
+# #	10 AF	Afghanistan	2	AFN
+# #	11 AL	Albania	    3	ALL
+# # etc.
+# 
+# # This is what the following loop does
+# for (i in 1:nrow(PrimoBlocco)) {
+#   PrimoBloccoRep[(nrow(SecondoBlocco)*(i-1)+1):(nrow(SecondoBlocco)*i),1:4] <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE))
+#   #print(do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE)))
+# }
+# rownames(PrimoBloccoRep) <- 1:nrow(PrimoBloccoRep)
+# 
+# # Replicate SecondoBlocco 239 times (239 countries)
+# SecondoBloccoRep <- do.call(rbind, replicate(nrow(PrimoBlocco), as.matrix(SecondoBlocco), simplify=FALSE))
+# 
+# # Now merge the 2 matrices in a data.frame (called FinalData)
+# FinalData = data.frame(PrimoBloccoRep, SecondoBloccoRep)
+# # Assign to FinalData the desired column names
+# colnames(FinalData) <- c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode", "ActivityCode", "ActivityName",  "ISIC",  "IndicatorCode",  "IndicatorName",	"BYear",	"Units",	"OriginalDB")
 
-# The aim here below is to re-arrange PrimoBloccoRep in this order:
-# 1  AM	Armenia	    1	AMD
-#	2	 AM	Armenia	    1	AMD
-#	3	 AM	Armenia	    1	AMD
-#	4	 AM	Armenia	    1	AMD
-#	5	 AM	Armenia	    1	AMD
-#	6	 AF	Afghanistan	2	AFN
-#	7	 AF	Afghanistan	2	AFN
-#	8	 AF	Afghanistan	2	AFN
-#	9	 AF	Afghanistan	2	AFN
-#	10 AF	Afghanistan	2	AFN
-#	11 AL	Albania	    3	ALL
-# etc.
-
-# This is what the following loop does
-for (i in 1:nrow(PrimoBlocco)) {    
-  PrimoBloccoRep[(nrow(SecondoBlocco)*(i-1)+1):(nrow(SecondoBlocco)*i),1:4] <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE))
-  #print(do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE)))
-}
-rownames(PrimoBloccoRep) <- 1:nrow(PrimoBloccoRep)
-
-# Replicate SecondoBlocco 239 times (239 countries)
-SecondoBloccoRep <- do.call(rbind, replicate(nrow(PrimoBlocco), as.matrix(SecondoBlocco), simplify=FALSE))
-
-# Now merge the 2 matrices in a data.frame (called FinalData)
-FinalData = data.frame(PrimoBloccoRep, SecondoBloccoRep)
-# Assign to FinalData the desired column names
-colnames(FinalData) <- c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode", "ActivityCode", "ActivityName",  "ISIC",  "IndicatorCode",  "IndicatorName",	"BYear",	"Units",	"OriginalDB")
-
+FinalData2 <- merge(PrimoBlocco, SecondoBlocco, by = NULL)
 
 # Section Four ----------------------------------------------
 # Loading the numeric values in GDPcurrent-NCU-countries.xls
