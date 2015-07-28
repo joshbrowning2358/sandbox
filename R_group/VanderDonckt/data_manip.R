@@ -1,3 +1,5 @@
+tm1 <- Sys.time()
+
 library("XLConnect")
 
 # Note: you generally don't want to wrap your whole script in a system.time()
@@ -15,7 +17,7 @@ rm(list = ls())
 
 # Set the path and list the files 
 setwd("T:/Team_working_folder/Eco/Macro_AIM/1.AIM_DataSteps/1.2AIM_CapturedData/DataMerge_2015")
-setwd("~/GitHub/sandbox/R_group/VanderDonckt/")
+setwd("~/Documents/Github/sandbox/R_group/VanderDonckt/")
 list.files(path = ".")
 
 # Read FaostatAreas2015.csv & CountryISOcode.csv
@@ -82,6 +84,10 @@ PrimoBlocco[,4] <- NA
 # Then we start merging faostatAreas & countryCodes: the resulting file is faostatAreas
 # PrimoBlocco <- data.matrix(PrimoBlocco)
 # TerzoBlocco <- data.matrix(TerzoBlocco)
+# We want to add currency codes to PrimoBlocco (from countryCodes)
+head(PrimoBlocco)
+head(countryCodes)
+
 for (i in 1:nrow(PrimoBlocco)) {  
   for (j in 1:nrow(countryCodes)) { 
     if (!length(agrep(PrimoBlocco[i,2],countryCodes[j,1], value = FALSE, fixed = TRUE)==1)) {
@@ -97,8 +103,32 @@ for (i in 1:nrow(PrimoBlocco)) {
 # Assign to PrimoBlocco the 4 desired column names
 colnames(PrimoBlocco) <- c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode")
 
+
+rMerge <- merge(faostatAreas, countryCodes)
+head(rMerge)
+dim(rMerge)
+dim(faostatAreas)
+
+
+
+
+rMerge <- merge(faostatAreas, countryCodes, by.x = "CountryName",
+             by.y = "Common.Name")
+head(rMerge)
+dim(rMerge)
+dim(faostatAreas)
+
+
+
+
 rMerge <- merge(faostatAreas, countryCodes, by.x = "CountryName",
              by.y = "Common.Name", all.x = TRUE)
+head(rMerge)
+dim(rMerge)
+dim(faostatAreas)
+
+
+
 colnames(rMerge)[colnames(rMerge) == "ISO.4217.Currency.Code"] = "CurrencyCode"
 dim(rMerge)
 dim(PrimoBlocco)
@@ -114,9 +144,16 @@ filter[is.na(filter)] = FALSE
 ## But, we still want to check for differences when one is NA and the ther is
 ## not...
 filter = filter |
-    (is.na(compare$CurrencyCode.merge) & !is.na(compare$CurrencyCode.for)) &
+    (is.na(compare$CurrencyCode.merge) & !is.na(compare$CurrencyCode.for)) |
     (is.na(compare$CurrencyCode.for) & !is.na(compare$CurrencyCode.merge))
 View(compare[filter, ])
+
+## Examine a few cases closer:
+PrimoBlocco[PrimoBlocco[, 4] == "AWG", ]
+PrimoBlocco[!is.na(PrimoBlocco[, 4]) & PrimoBlocco[, 4] == "AWG", ]
+countryCodes[countryCodes[, 2] == "AWG", ]
+PrimoBlocco[!is.na(PrimoBlocco[, 4]) & PrimoBlocco[, 4] == "SHP", ]
+countryCodes[countryCodes[, 2] == "SHP", ]
 
 # Now focus on SecondoBlocco (from B2, i.e., 1.NAE_DictionaryForMerge.xlsx -- 3rd spreadsheet) )
 # In B2, select (for each country) only the 5 variables we are interested in, GFCF, GDP, 3 VA (Total Ec, Agric., Manif.)
@@ -142,7 +179,6 @@ SecondoBloccoNew <- subset(B2, In.AIM.DB. == "Yes",
 SecondoBlocco
 SecondoBloccoNew
 SecondoBlocco == SecondoBloccoNew
-SecondoBlocco <- SecondoBloccoNew
 colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName", "ISIC",
                              "IndicatorCode", "IndicatorName", "BYear",
                              "Units", "OriginalDB")
@@ -150,9 +186,11 @@ colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName", "ISIC",
 # Section Three ----------------------------------------------
 # Merging PrimoBlocco and SecondoBlocco
 
-# # Replicate PrimoBlocco 5 times (5 variables)
-# PrimoBloccoRep <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco), simplify=FALSE))
-# 
+# Replicate PrimoBlocco 5 times (5 variables)
+PrimoBloccoRep <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco), simplify=FALSE))
+dim(PrimoBloccoRep)
+5 * nrow(PrimoBlocco)
+
 # # The aim here below is to re-arrange PrimoBloccoRep in this order:
 # # 1  AM	Armenia	    1	AMD
 # #	2	 AM	Armenia	    1	AMD
@@ -167,22 +205,33 @@ colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName", "ISIC",
 # #	11 AL	Albania	    3	ALL
 # # etc.
 # 
-# # This is what the following loop does
-# for (i in 1:nrow(PrimoBlocco)) {
-#   PrimoBloccoRep[(nrow(SecondoBlocco)*(i-1)+1):(nrow(SecondoBlocco)*i),1:4] <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE))
-#   #print(do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE)))
-# }
-# rownames(PrimoBloccoRep) <- 1:nrow(PrimoBloccoRep)
-# 
-# # Replicate SecondoBlocco 239 times (239 countries)
-# SecondoBloccoRep <- do.call(rbind, replicate(nrow(PrimoBlocco), as.matrix(SecondoBlocco), simplify=FALSE))
-# 
-# # Now merge the 2 matrices in a data.frame (called FinalData)
-# FinalData = data.frame(PrimoBloccoRep, SecondoBloccoRep)
-# # Assign to FinalData the desired column names
-# colnames(FinalData) <- c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode", "ActivityCode", "ActivityName",  "ISIC",  "IndicatorCode",  "IndicatorName",	"BYear",	"Units",	"OriginalDB")
+# This is what the following loop does
+for (i in 1:nrow(PrimoBlocco)) {
+  PrimoBloccoRep[(nrow(SecondoBlocco)*(i-1)+1):(nrow(SecondoBlocco)*i),1:4] <-
+      do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE))
+  #print(do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco[i,]), simplify=FALSE)))
+}
+rownames(PrimoBloccoRep) <- 1:nrow(PrimoBloccoRep)
 
+# Replicate SecondoBlocco 239 times (239 countries)
+SecondoBloccoRep <- do.call(rbind, replicate(nrow(PrimoBlocco),
+                                             as.matrix(SecondoBlocco), simplify=FALSE))
+
+# Now merge the 2 matrices in a data.frame (called FinalData)
+FinalData = data.frame(PrimoBloccoRep, SecondoBloccoRep)
+# Assign to FinalData the desired column names
+colnames(FinalData) <-
+    c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode",
+      "ActivityCode", "ActivityName",  "ISIC",  "IndicatorCode",
+      "IndicatorName",	"BYear",	"Units",	"OriginalDB")
+
+# Merging by "NULL" means that you get a cartesian product: every row of the
+# first data.frame joins to every row of the second data.frame.
 FinalData2 <- merge(PrimoBlocco, SecondoBlocco, by = NULL)
+dim(FinalData2)
+dim(PrimoBlocco)
+dim(SecondoBlocco)
+239*5
 
 # Section Four ----------------------------------------------
 # Loading the numeric values in GDPcurrent-NCU-countries.xls
@@ -193,116 +242,120 @@ Data = loadWorkbook("GDPcurrent-NCU-countries.xls")
 dataloaded = readWorksheet(Data, sheet=1)
 dataloaded <- format(dataloaded, scientific = FALSE)
 
-dataload <- data.frame(CountryName = c(dataloaded[1]), IndicatorName = c(dataloaded[3]), ActivityCode = c(dataloaded[4]), Col5 = c(dataloaded[5]), Col6 = c(dataloaded[6]), Col7 = c(dataloaded[7]), Col8 = c(dataloaded[8]), Col9 = c(dataloaded[9]), Col10 = c(dataloaded[10]), Col11 = c(dataloaded[11]), Col12 = c(dataloaded[12]), Col13 = c(dataloaded[13]), Col14 = c(dataloaded[14]), Col15 = c(dataloaded[15]), Col16 = c(dataloaded[16]), Col17 = c(dataloaded[17]), Col18 = c(dataloaded[18]), Col19 = c(dataloaded[19]), Col20 = c(dataloaded[20]), Col21 = c(dataloaded[21]), Col22 = c(dataloaded[22]), Col23 = c(dataloaded[23]), Col24 = c(dataloaded[24]), Col25 = c(dataloaded[25]), Col26 = c(dataloaded[26]), Col27 = c(dataloaded[27]), Col28 = c(dataloaded[28]), Col29 = c(dataloaded[29]), Col30 = c(dataloaded[30]), Col31 = c(dataloaded[31]), Col32 = c(dataloaded[32]), Col33 = c(dataloaded[33]), Col34 = c(dataloaded[34]), Col35 = c(dataloaded[35]), Col36 = c(dataloaded[36]), Col37 = c(dataloaded[37]), Col38 = c(dataloaded[38]), Col39 = c(dataloaded[39]), Col40 = c(dataloaded[40]), Col41 = c(dataloaded[41]), Col42 = c(dataloaded[42]), Col43 = c(dataloaded[43]), Col44 = c(dataloaded[44]), Col45 = c(dataloaded[45]), Col46 = c(dataloaded[46]), Col47 = c(dataloaded[47]), Col48 = c(dataloaded[48]))
-colnames(dataload) <- c("CountryName", "IndicatorName", "ActivityCode",  "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013")
+dataload <- data.frame(CountryName = c(dataloaded[1]), IndicatorName = c(dataloaded[3]),
+                       ActivityCode = c(dataloaded[4]), Col5 = c(dataloaded[5]),
+                       Col6 = c(dataloaded[6]), Col7 = c(dataloaded[7]),
+                       Col8 = c(dataloaded[8]), Col9 = c(dataloaded[9]),
+                       Col10 = c(dataloaded[10]), Col11 = c(dataloaded[11]),
+                       Col12 = c(dataloaded[12]), Col13 = c(dataloaded[13]),
+                       Col14 = c(dataloaded[14]), Col15 = c(dataloaded[15]),
+                       Col16 = c(dataloaded[16]), Col17 = c(dataloaded[17]),
+                       Col18 = c(dataloaded[18]), Col19 = c(dataloaded[19]),
+                       Col20 = c(dataloaded[20]), Col21 = c(dataloaded[21]),
+                       Col22 = c(dataloaded[22]), Col23 = c(dataloaded[23]),
+                       Col24 = c(dataloaded[24]), Col25 = c(dataloaded[25]),
+                       Col26 = c(dataloaded[26]), Col27 = c(dataloaded[27]),
+                       Col28 = c(dataloaded[28]), Col29 = c(dataloaded[29]),
+                       Col30 = c(dataloaded[30]), Col31 = c(dataloaded[31]),
+                       Col32 = c(dataloaded[32]), Col33 = c(dataloaded[33]),
+                       Col34 = c(dataloaded[34]), Col35 = c(dataloaded[35]),
+                       Col36 = c(dataloaded[36]), Col37 = c(dataloaded[37]),
+                       Col38 = c(dataloaded[38]), Col39 = c(dataloaded[39]),
+                       Col40 = c(dataloaded[40]), Col41 = c(dataloaded[41]),
+                       Col42 = c(dataloaded[42]), Col43 = c(dataloaded[43]),
+                       Col44 = c(dataloaded[44]), Col45 = c(dataloaded[45]),
+                       Col46 = c(dataloaded[46]), Col47 = c(dataloaded[47]),
+                       Col48 = c(dataloaded[48]))
+colnames(dataload) <- c("CountryName", "IndicatorName", "ActivityCode",
+                        "1970", "1971", "1972", "1973", "1974", "1975",
+                        "1976", "1977", "1978", "1979", "1980", "1981",
+                        "1982", "1983", "1984", "1985", "1986", "1987",
+                        "1988", "1989", "1990", "1991", "1992", "1993",
+                        "1994", "1995", "1996", "1997", "1998", "1999",
+                        "2000", "2001", "2002", "2003", "2004", "2005",
+                        "2006", "2007", "2008", "2009", "2010", "2011",
+                        "2012", "2013")
 nrowdataload <- nrow(dataload)
 dataload <- as.matrix(dataload)
 
-FinalData$"1970" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1971" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1972" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1973" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1974" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1975" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1976" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1977" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1978" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1979" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1980" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1981" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1982" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1983" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1984" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1985" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1986" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1987" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1988" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1989" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1990" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1991" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1992" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1993" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1994" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1995" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1996" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1997" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1998" <- c(rep(NA, nrow(FinalData)))
-FinalData$"1999" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2000" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2001" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2002" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2003" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2004" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2005" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2006" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2007" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2008" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2009" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2010" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2011" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2012" <- c(rep(NA, nrow(FinalData)))
-FinalData$"2013" <- c(rep(NA, nrow(FinalData)))
+# Or, instead:
+Data = loadWorkbook("GDPcurrent-NCU-countries.xls")
+dataloaded = readWorksheet(Data, sheet=1)
+dataloaded <- format(dataloaded, scientific = FALSE)
+dataload <- dataloaded
+dataload$Currency <- NULL
+colnames(dataload) <- c("CountryName", "IndicatorName", "ActivityCode", 1970:2013)
 
+nrowdataload <- nrow(dataload)
 nrowFinalData <- nrow(FinalData)
 FinalData <- as.matrix(FinalData)
 
 # Merging the two datasets (FinalData and dataload) when appropriate
 # AtQ_01t99
-for (i in 1:nrowFinalData) {  print(i)
-   for (j in 1:nrowdataload) { 
-      if (!length(agrep(FinalData[i,2],dataload[j,1], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,9],dataload[j,2], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,5],dataload[j,3], value = FALSE, fixed = TRUE)==1)) {
-        FinalData[i,2] <- FinalData[i,2] 
-      } 
-      else {  
-      if (agrep(FinalData[i,2],dataload[j,1], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,9],dataload[j,2], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,5],dataload[j,3], value = FALSE, fixed = TRUE)==1) { 
-        for (k in 13:56) {
-          FinalData[i,k] <- dataload[j,k-9] 
+# 
+FinalData[1:5, 2]
+dataload[1:5, 1]
+FinalData[1:5, 9]
+dataload[1:5, 2]
+FinalData[1:5, 5]
+dataload[1:5, 3]
+
+for (i in 1:nrowdataload) {
+  if (dataload[i,2] == "Total Value Added") {
+      dataload[i,2] <- "Value Added"
+  } else {
+  if (dataload[i,2] == "Gross Domestic Product (GDP)") {
+      dataload[i,2] <- "Gross Domestic Product"
+  } else {
+  if (dataload[i,2] == "Gross fixed capital formation (including Acquisitions less disposals of valuables)") {
+      dataload[i,2] <- "Gross fixed capital formation"
+  } else {
+  if (dataload[i,3] == "AtB_01t05") {
+      dataload[i,2] <- "Value Added"
+  } else {
+      if (dataload[i,3] == "D_15t37") {
+      dataload[i,2] <- "Value Added"
+          }  
         }
       }
-      }
-   }
-}
-
-# "AtB_01t05"
-for (i in 1:nrowFinalData) { print(i)
-    for (j in 1:nrowdataload) {  
-      if (!length(agrep(FinalData[i,5],"AtB_01t05", value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,5],dataload[j,3], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,2],dataload[j,1], value = FALSE, fixed = TRUE)==1)) {
-        FinalData[i,2] <- FinalData[i,2]
-      } 
-      else {
-      if (agrep(FinalData[i,5],"AtB_01t05", value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,5],dataload[j,3], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,2],dataload[j,1], value = FALSE, fixed = TRUE)==1) {              
-        for (k in 13:56) {
-          FinalData[i,k] <- dataload[j,k-9] 
-        }
-      }
-      }
     }
+  }
 }
 
-# "D_15t37"      
-for (i in 1:nrowFinalData) { print(i)
-    for (j in 1:nrowdataload) {  
-      if (!length(agrep(FinalData[i,5], "D_15t37", value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,5],dataload[j,3], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,2],dataload[j,1], value = FALSE, fixed = TRUE)==1)) {
-        FinalData[i,2] <- FinalData[i,2]
-      } 
-      else {
-      if (agrep(FinalData[i,5], "D_15t37", value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,5],dataload[j,3], value = FALSE, fixed = TRUE)==1 & agrep(FinalData[i,2],dataload[j,1], value = FALSE, fixed = TRUE)==1) 
-           {              
-        for (k in 13:56) {
-          FinalData[i,k] <- dataload[j,k-9] 
-         }
-         }
-         }
-    }
-}
+dataload$IndicatorName[dataload$IndicatorName == "Total Value Added"] = "Value Added"
+dataload$IndicatorName[dataload$IndicatorName == "Gross Domestic Product (GDP)"] =
+    "Gross Domestic Product"
+dataload$IndicatorName[dataload$IndicatorName == "Gross fixed capital formation (including Acquisitions less disposals of valuables)"] =
+    "Gross fixed capital formation"
+dataload$IndicatorName[dataload$ActivityCode == "AtB_01t05"] = "Value Added"
+dataload$IndicatorName[dataload$ActivityCode == "D_15t37"] = "Value Added"
 
+FinalDataStructure <- merge(FinalData, dataload, by= c("CountryName", "IndicatorName", "ActivityCode"), all.x = TRUE)
+dim(FinalData)
+dim(FinalDataStructure)
+head(FinalDataStructure)
+dim(dataload)
+## Where did the extra rows come from???
+
+library(dplyr)
+dataload$count = 1
+dataload %>%
+    group_by(CountryName, IndicatorName, ActivityCode) %>%
+    summarize(rowCount = sum(count))
+dim(dataload) # 3712 but only 3695 rows in summary
+dataload %>%
+    group_by(CountryName, IndicatorName, ActivityCode) %>%
+    summarize(rowCount = sum(count)) %>%
+    filter(rowCount > 1)
+# So, 'The former Yugoslav Republic of Macedonia' has duplicate records
+dataload %>%
+    filter(CountryName == 'The former Yugoslav Republic of Macedonia')
 
 # Section Five ----------------------------------------------
 # Export the dataframe in R to an Excel (.csv) file
-write.csv(FinalData, file = "FinalDataStructure.csv")
+write.csv(FinalData, file = "FinalDataStructure.csv", row.names = FALSE)
 
-})
-print(tm1)
+print(Sys.time() - tm1)
 # to run it up to here it takes moreless 25 mins
 
 

@@ -1,53 +1,44 @@
+---
+title: ""
+author: "Marie VanderDonckt"
+date: "July 28, 2015"
+output: pdf_document
+---
+
 ## Descriptive statistics : mean,median,25th and 75th quartiles,min,max
 
-```{r}
+```{r, fig.height=8}
+## Suppress start-up messages for nicer printout
+suppressPackageStartupMessages(library(xts))
+
 FinalData = read.csv("~/Documents/Github/sandbox/R_group/VanderDonckt/FinalDataStructure.csv")
 
-numericCols = grepl("[0-9].", colnames(FinalDataStructure))
+numericCols = grepl("[0-9].", colnames(FinalData))
 
-for (i in 1:nrow(FinalData)) { print(i)
+par(mfrow = c(2, 1))
+
+for (i in 1:nrow(FinalData)) {
 
   FinalDataNum <- ts(FinalData[i, numericCols])
   
-  if (length(sum(!is.na(FinalData[i, numericCols]))>0)==1) {
-    }
-  else {
+  # if (length(sum(!is.na(FinalData[i, numericCols]))>0)==1) {
+  if(any(!is.na(FinalData[i, numericCols]))){
   
-    hist(as.numeric(FinalData[i,13:56]), breaks=11, col = "lightblue", border = "pink", main=as.character(FinalData[i,2:2]), xlab=as.character(FinalData[i,9:9])) 
+    hist(as.numeric(FinalData[i, numericCols]), breaks=11, col = "lightblue",
+         border = "pink", main=as.character(FinalData[i, "IndicatorName"]),
+         xlab=as.character(FinalData[i, "IndicatorCode"])) 
     
-    require(xts)
-    PCP <- ts(as.numeric(FinalData[i,13:56]), frequency = 1, start = 1970)
-    ts_plot <- plot(as.xts(PCP), major.format = "%Y", main=as.character(FinalData[i,2:2]))
-    ts_plot
+    PCP <- ts(as.numeric(FinalData[i, numericCols]), frequency = 1, start = 1970)
+    plot(as.xts(PCP), major.format = "%Y",
+         main=as.character(FinalData[i, "IndicatorName"]))
   }
 
-    #nam <- paste(as.character(FinalData[i,2:2]), i, "eps", sep = ".")
+  nam <- paste(as.character(FinalData[i,2:2]), i, "eps", sep = ".")
   print("------------------------------------------------------------")
-  suppressWarnings(print(as.character(FinalData[i,2:2]))) 
-  suppressWarnings(print(as.character(FinalData[i,9:9])))
-  suppressWarnings(print(as.character(FinalData[i,5:5])))
-  suppressWarnings(print(summary(as.numeric(FinalData[i,13:56]))))
+  suppressWarnings(print(as.character(FinalData[i, "IndicatorName"]))) 
+  suppressWarnings(print(as.character(FinalData[i, "IndicatorCode"])))
+  suppressWarnings(print(as.character(FinalData[i, "CountryFAOCode"])))
+  suppressWarnings(print(summary(as.numeric(FinalData[i, numericCols]))))
 }
 
-  #fivenum(as.numeric(FinalData[i,13:56]))
-  #print("------------------------------------------------------------")
-  #dev.copy2eps(file=nam, horizontal=F)
-
-
-# Section Seven ----------------------------------------------
-# Save the history file
-
-timestamp(stamp = date(),
-          prefix = "##------ ", suffix = " ------##",
-          quiet = FALSE)
-
-# Stop writing to the file
-sink()
-
-# Append to the file (analysis-output.txt): look in the current directory
-sink('analysis-output.txt', append=TRUE)
-sink()
-
-
-#history(max.show=200) # display 200 previous commands
-#savehistory(file=".Rhistory")
+```
