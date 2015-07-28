@@ -353,7 +353,7 @@ dataload %>%
 
 # Section Five ----------------------------------------------
 # Export the dataframe in R to an Excel (.csv) file
-write.csv(FinalData, file = "FinalDataStructure.csv", row.names = FALSE)
+write.csv(FinalDataStructure, file = "FinalDataStructure.csv", row.names = FALSE)
 
 print(Sys.time() - tm1)
 # to run it up to here it takes moreless 25 mins
