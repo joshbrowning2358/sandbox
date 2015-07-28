@@ -1,0 +1,53 @@
+## Descriptive statistics : mean,median,25th and 75th quartiles,min,max
+
+```{r}
+FinalData = read.csv("~/Documents/Github/sandbox/R_group/VanderDonckt/FinalDataStructure.csv")
+
+numericCols = grepl("[0-9].", colnames(FinalDataStructure))
+
+for (i in 1:nrow(FinalData)) { print(i)
+
+  FinalDataNum <- ts(FinalData[i, numericCols])
+  
+  if (length(sum(!is.na(FinalData[i, numericCols]))>0)==1) {
+    }
+  else {
+  
+    hist(as.numeric(FinalData[i,13:56]), breaks=11, col = "lightblue", border = "pink", main=as.character(FinalData[i,2:2]), xlab=as.character(FinalData[i,9:9])) 
+    
+    require(xts)
+    PCP <- ts(as.numeric(FinalData[i,13:56]), frequency = 1, start = 1970)
+    ts_plot <- plot(as.xts(PCP), major.format = "%Y", main=as.character(FinalData[i,2:2]))
+    ts_plot
+  }
+
+    #nam <- paste(as.character(FinalData[i,2:2]), i, "eps", sep = ".")
+  print("------------------------------------------------------------")
+  suppressWarnings(print(as.character(FinalData[i,2:2]))) 
+  suppressWarnings(print(as.character(FinalData[i,9:9])))
+  suppressWarnings(print(as.character(FinalData[i,5:5])))
+  suppressWarnings(print(summary(as.numeric(FinalData[i,13:56]))))
+}
+
+  #fivenum(as.numeric(FinalData[i,13:56]))
+  #print("------------------------------------------------------------")
+  #dev.copy2eps(file=nam, horizontal=F)
+
+
+# Section Seven ----------------------------------------------
+# Save the history file
+
+timestamp(stamp = date(),
+          prefix = "##------ ", suffix = " ------##",
+          quiet = FALSE)
+
+# Stop writing to the file
+sink()
+
+# Append to the file (analysis-output.txt): look in the current directory
+sink('analysis-output.txt', append=TRUE)
+sink()
+
+
+#history(max.show=200) # display 200 previous commands
+#savehistory(file=".Rhistory")
