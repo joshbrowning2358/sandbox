@@ -1,19 +1,44 @@
-tm1 <- Sys.time()
+# 1, Load all the variables you need to re-create FinalDataStructure in
+# 2. Files cleaning; selecting the desired variables in each file
+# 3. Merging PrimoBlocco and SecondoBlocco
+# 4. Loading the numeric values in GDPcurrent-NCU-countries.xls
+# 5. Export the dataframe in R to an Excel (.csv) file
+# 6. This code produces, reading row by row, histograms, plots and summary
+# stats. and saves them in the current directory
+# 7. Save the history file
 
-library("XLConnect")
-
-# Note: you generally don't want to wrap your whole script in a system.time()
-# call.  Instead, write your code and then use something like
-# system.time(source("filename.R"))
-# to measure computation time.
-# tm1 <- system.time(
-# {
-# Section One ----------------------------------------------
-# Load all the variables you need to re-create FinalDataStructure in
-# 1.NAE_DictionaryForMerge.xlsx
 
 # Clean the workspace
 rm(list = ls())
+
+#
+##
+###
+# Old
+# tm1 <- system.time({
+###
+##
+#
+
+# Note: you generally don't want to wrap your whole script in a system.time() 
+# call.  Instead, write your code and then use something like 
+# system.time(source("filename.R")) to measure computation time.  Or, create a
+# time object and look at the difference:
+
+#
+##
+###
+# New
+tm1 <- Sys.time()
+###
+##
+#
+
+library("XLConnect")
+
+# Section One ----------------------------------------------
+# Load all the variables you need to re-create FinalDataStructure in
+# 1.NAE_DictionaryForMerge.xlsx
 
 # Set the path and list the files 
 setwd("T:/Team_working_folder/Eco/Macro_AIM/1.AIM_DataSteps/1.2AIM_CapturedData/DataMerge_2015")
@@ -21,39 +46,68 @@ setwd("~/Documents/Github/sandbox/R_group/VanderDonckt/")
 list.files(path = ".")
 
 # Read FaostatAreas2015.csv & CountryISOcode.csv
+#
+##
+###
+# Old
+Block1 = read.csv("FaostatAreas2015.csv")
+Block3 = read.csv("CountryISOcode.csv")
+###
+##
+#
+
+#
+##
+###
+# New
 faostatAreas = read.csv("FaostatAreas2015.csv")
 countryCodes = read.csv("CountryISOcode.csv")
-#str(faostatAreas)
+###
+##
+#
+
+str(faostatAreas)
 # Print the headings of the 2 files (faostatAreas & countryCodes)
-#head(faostatAreas)
-#head(countryCodes)
+head(faostatAreas)
+head(countryCodes)
 # We need these variables from the 2 files 
 # FAOSTATAreas2015.csv: CountryISOCode  CountryName	CountryFAOCode (faostatAreas)
 # CountryISOcode.csv: CurrencyCode (countryCodes)
 
-# Change the path in order to read other files
-# Edit (JOSH): I just put all the files in the same folder, so I commented out
-# this line.
-# setwd("T:/Team_working_folder/Eco/Macro_AIM/1.AIM_DataSteps/1.2AIM_CapturedData")  
-list.files(path = ".")
-
 # Read 1.NAE_DictionaryForMerge.xlsx (3rd spreadsheet)
 Block2 = loadWorkbook("1.NAE_DictionaryForMerge.xlsx")
+#
+##
+###
+# Old
+B2 = readWorksheet(Block2, sheet=3)
+head(B2)
+###
+##
+#
 # Edit (JOSH): It's easier to skip the first row so that column names come in at
 # the right place.  You have to manually assign one, but that's not bad.
+#
+##
+###
+# Old
 B2 = readWorksheet(Block2, sheet=3, startRow = 2)
+head(B2)
 colnames(B2)[colnames(B2) == "Col12"] = "In.AIM.DB."
-# Print the headings of Block2
-#head(Block2)
+###
+##
+#
+
 # We need these variables from the file (Block2)
 # NAE_DictionaryForMerge.xlsx: ActivityCode  ActivityName	ISIC	IndicatorCode	IndicatorName
 # NAE_DictionaryForMerge.xlsx: BYear	Units	OriginalDB
 
-
 # Section Two ----------------------------------------------
 # Files cleaning; selecting the desired variables in each file
 
-# Remove the rows with empty cells in Block1, e.g., USSR has no ISO code, hence we drop it
+# Remove the rows with empty cells in faostatAreas, e.g., USSR has no ISO code,
+# hence we drop it
+
 faostatAreas <- faostatAreas[, c("ISO", "Country", "FAOCode")]
 colnames(faostatAreas) <- c("CountryISOCode", "CountryName", "CountryFAOCode")
 faostatAreas[faostatAreas == ""] <- NA
@@ -62,21 +116,36 @@ faostatAreas <- subset(faostatAreas, rowSums(is.na(faostatAreas))==0)
 # it avoids having to create and then remove NAs):
 filter <- apply(faostatAreas, 1, function(x) any(x == ""))
 faostatAreas <- faostatAreas[!filter, ]
-# Assign to Block1 the desired column names
-# This is already done above
-# colnames(PrimoBlocco) <- c("CountryISOCode", "CountryName", "CountryFAOCode")
-# PrimoBlocco <- subset(PrimoBlocco, select=c("CountryISOCode", "CountryName", "CountryFAOCode"))
 
-# In TerzoBlocco we select the country name and the ISO.4217.Currency.Code
+# In countryCodes we select the country name and the ISO.4217.Currency.Code
+#
+##
+###
+# Old
+B3a=countryCodes[2]
+B3b=countryCodes[8]
+countryCodes = data.frame(B3a, B3b)
+###
+##
+#
+
 # Note (JOSH): It's often much safer to refer to variables by name rather than
 # location (i.e. second and eigth column).  This allows you to change the input
 # data without completely messing up the code.
-# B3a=countryCodes[2]
-# B3b=countryCodes[8]
-# TerzoBlocco = data.frame(B3a, B3b)
+#
+##
+###
+# New
 countryCodes = countryCodes[, c("Common.Name", "ISO.4217.Currency.Code")]
+###
+##
+#
 
-# Now we merge PrimoBlocco & TerzoBlocco 
+#
+##
+###
+# Old
+# Now we merge countryCodes & faostatAreas 
 # First we add a 4th column to PrimoBlocco (with NAs)
 PrimoBlocco <- faostatAreas
 PrimoBlocco[,4] <- NA
@@ -101,9 +170,16 @@ for (i in 1:nrow(PrimoBlocco)) {
 }
 
 # Assign to PrimoBlocco the 4 desired column names
-colnames(PrimoBlocco) <- c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode")
+colnames(PrimoBlocco) <- c("CountryISOCode", "CountryName",
+                           "CountryFAOCode", "CurrencyCode")
+###
+##
+#
 
-
+#
+##
+###
+# New
 rMerge <- merge(faostatAreas, countryCodes)
 head(rMerge)
 dim(rMerge)
@@ -130,6 +206,10 @@ dim(faostatAreas)
 
 
 colnames(rMerge)[colnames(rMerge) == "ISO.4217.Currency.Code"] = "CurrencyCode"
+###
+##
+#
+
 dim(rMerge)
 dim(PrimoBlocco)
 compare = merge(rMerge, PrimoBlocco, by = c("CountryISOCode", "CountryName",
@@ -139,9 +219,10 @@ dim(compare)
 View(compare)
 filter = compare$CurrencyCode.merge != compare$CurrencyCode.for
 View(compare[filter, ])
+(1:10)[c(T, F, T, F, rep(NA, 6))]
 ## Remove the NA's from filter
 filter[is.na(filter)] = FALSE
-## But, we still want to check for differences when one is NA and the ther is
+## But, we still want to check for differences when one is NA and the other is
 ## not...
 filter = filter |
     (is.na(compare$CurrencyCode.merge) & !is.na(compare$CurrencyCode.for)) |
@@ -152,9 +233,16 @@ View(compare[filter, ])
 PrimoBlocco[PrimoBlocco[, 4] == "AWG", ]
 PrimoBlocco[!is.na(PrimoBlocco[, 4]) & PrimoBlocco[, 4] == "AWG", ]
 countryCodes[countryCodes[, 2] == "AWG", ]
+agrep("Cuba", "Aruba", value = FALSE, fixed = TRUE)
 PrimoBlocco[!is.na(PrimoBlocco[, 4]) & PrimoBlocco[, 4] == "SHP", ]
 countryCodes[countryCodes[, 2] == "SHP", ]
+agrep("Spain", "Saint Helena", value = FALSE, fixed = TRUE)
 
+
+#
+##
+###
+# Old
 # Now focus on SecondoBlocco (from B2, i.e., 1.NAE_DictionaryForMerge.xlsx -- 3rd spreadsheet) )
 # In B2, select (for each country) only the 5 variables we are interested in, GFCF, GDP, 3 VA (Total Ec, Agric., Manif.)
 B2 <- subset(B2, B2$In.AIM.DB. == "Yes")
@@ -171,11 +259,24 @@ h <- c(B2[9]) #OriginalDB
 # Create the data.frame structure
 SecondoBlocco = data.frame(a, b, c, d, e, f, g, h)
 # Assign to SecondoBlocco the 8 desired column names
-colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName",  "ISIC",  "IndicatorCode",	"IndicatorName",	"BYear",	"Units",	"OriginalDB")
+colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName", "ISIC",
+                             "IndicatorCode", "IndicatorName", "BYear",
+                             "Units", "OriginalDB")
+###
+##
+#
 
+#
+##
+###
+# New
 SecondoBloccoNew <- subset(B2, In.AIM.DB. == "Yes",
     select = c(ActivityCode, ActivityName, ISIC, IndicatorCode,
                IndicatorName.1, BYear, Units, OriginalDB))
+###
+##
+#
+
 SecondoBlocco
 SecondoBloccoNew
 SecondoBlocco == SecondoBloccoNew
@@ -186,6 +287,10 @@ colnames(SecondoBlocco) <- c("ActivityCode", "ActivityName", "ISIC",
 # Section Three ----------------------------------------------
 # Merging PrimoBlocco and SecondoBlocco
 
+#
+##
+###
+# Old
 # Replicate PrimoBlocco 5 times (5 variables)
 PrimoBloccoRep <- do.call(rbind, replicate(nrow(SecondoBlocco), as.matrix(PrimoBlocco), simplify=FALSE))
 dim(PrimoBloccoRep)
@@ -224,11 +329,27 @@ colnames(FinalData) <-
     c("CountryISOCode", "CountryName", "CountryFAOCode", "CurrencyCode",
       "ActivityCode", "ActivityName",  "ISIC",  "IndicatorCode",
       "IndicatorName",	"BYear",	"Units",	"OriginalDB")
+###
+##
+#
 
+#
+##
+###
+# New
 # Merging by "NULL" means that you get a cartesian product: every row of the
 # first data.frame joins to every row of the second data.frame.
 FinalData2 <- merge(PrimoBlocco, SecondoBlocco, by = NULL)
+###
+##
+#
+
 dim(FinalData2)
+dim(FinalData)
+## Not always easy to check equality:
+FinalData2 == FinalData
+head(FinalData2)
+head(FinalData)
 dim(PrimoBlocco)
 dim(SecondoBlocco)
 239*5
@@ -242,6 +363,10 @@ Data = loadWorkbook("GDPcurrent-NCU-countries.xls")
 dataloaded = readWorksheet(Data, sheet=1)
 dataloaded <- format(dataloaded, scientific = FALSE)
 
+#
+##
+###
+# Old
 dataload <- data.frame(CountryName = c(dataloaded[1]), IndicatorName = c(dataloaded[3]),
                        ActivityCode = c(dataloaded[4]), Col5 = c(dataloaded[5]),
                        Col6 = c(dataloaded[6]), Col7 = c(dataloaded[7]),
@@ -277,8 +402,14 @@ colnames(dataload) <- c("CountryName", "IndicatorName", "ActivityCode",
                         "2012", "2013")
 nrowdataload <- nrow(dataload)
 dataload <- as.matrix(dataload)
+###
+##
+#
 
-# Or, instead:
+#
+##
+###
+# New
 Data = loadWorkbook("GDPcurrent-NCU-countries.xls")
 dataloaded = readWorksheet(Data, sheet=1)
 dataloaded <- format(dataloaded, scientific = FALSE)
@@ -287,8 +418,11 @@ dataload$Currency <- NULL
 colnames(dataload) <- c("CountryName", "IndicatorName", "ActivityCode", 1970:2013)
 
 nrowdataload <- nrow(dataload)
+###
+##
+#
+
 nrowFinalData <- nrow(FinalData)
-FinalData <- as.matrix(FinalData)
 
 # Merging the two datasets (FinalData and dataload) when appropriate
 # AtQ_01t99
@@ -300,6 +434,10 @@ dataload[1:5, 2]
 FinalData[1:5, 5]
 dataload[1:5, 3]
 
+#
+##
+###
+# Old
 for (i in 1:nrowdataload) {
   if (dataload[i,2] == "Total Value Added") {
       dataload[i,2] <- "Value Added"
@@ -321,6 +459,9 @@ for (i in 1:nrowdataload) {
     }
   }
 }
+###
+##
+#
 
 dataload$IndicatorName[dataload$IndicatorName == "Total Value Added"] = "Value Added"
 dataload$IndicatorName[dataload$IndicatorName == "Gross Domestic Product (GDP)"] =
